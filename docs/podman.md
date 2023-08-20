@@ -1,5 +1,7 @@
+# Podman Instructions 
+Remember to first chown, then unshare: `podman unshare chown 200:200 -R jellyfin` so that containers can run rootless.
 
-
+## Logitech Media Server
 ```
     podman run -d
     --hostname=lms.local
@@ -15,7 +17,7 @@
     docker.io/lmscommunity/logitechmediaserver:stable
 ```
 
-
+## Jellyfin
 ```
     podman run -d
     --hostname jellyfin.local
@@ -31,7 +33,7 @@
     docker.io/jellyfin/jellyfin:latest
 ```
 
-
+## xTeve
 ```
 podman run -d
   --hostname xteve.local
