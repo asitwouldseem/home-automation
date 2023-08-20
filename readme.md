@@ -53,10 +53,10 @@ I fell into this rabbit hole in an attempt to slim down how many remotes sat on 
 
 I am still trying to find a nice way to automate source selection. At the moment I pick the source in Apple Home. BD/SACD playback is also handled from Apple Home.
 
-I use the brilliant [iPeng](http://penguinlovesmusic.de/) on my phone and [Jivelite](github.com/ralph-irving/jivelite) for players with screens.
+I use the brilliant [iPeng](http://penguinlovesmusic.de/) on my phone and [Jivelite](https://github.com/ralph-irving/jivelite) for players with screens.
 
 ### Climate
-I'm not a fan (hah!) of connected A/Cs so use a handy project called [SmartIR](github.com/smarthomehub/smartir) to do all the heavy lifting. I think it's a dead project, but it's still working so I'll keep using it until it breaks! I also use it for my Cambridge amp and Sony BD transport.
+I'm not a fan (hah!) of connected A/Cs so use a handy project called [SmartIR]https://(github.com/smarthomehub/smartir) to do all the heavy lifting. I think it's a dead project, but it's still working so I'll keep using it until it breaks! I also use it for my Cambridge amp and Sony BD transport.
 
 I have an IR controlled fan in my bedroom which is controlled by the Broadlink in a Rube Goldberg of YAML.
 
@@ -67,7 +67,7 @@ I'm working on a System 7 themed ESP32 ePaper display to display important infor
 This is an ongoing effort, but I use a [Grandstream HT801](https://www.grandstream.com/products/gateways-and-atas/analog-telephone-adaptors/product/ht801) to make an old Telecom Australia 800 series rotary phone talk to Home Assistant. My dream would be a [Telecom Gold Phone](https://youtube.com/watch?v=we5zxv5c00g) and tie into the coin circuitry for further automations. I use the built in Whisper and Piper voice pipelines.
 
 ### ZHA
-Z-wave products are super expensive down under and I'm not entirely sure why. I use a [ConBee II](https://phoscon.de/en/conbee2) dongle to bring Zigbee devices into my Home Assistant install. If, like me, you use KVM for virtualisation. You'll need to [pass through the serial device](community.home-assistant.io/t/conbee-ii-and-kvm/333560).
+Z-wave products are super expensive down under and I'm not entirely sure why. I use a [ConBee II](https://phoscon.de/en/conbee2) dongle to bring Zigbee devices into my Home Assistant install. If, like me, you use KVM for virtualisation. You'll need to [pass through the serial device](https://community.home-assistant.io/t/conbee-ii-and-kvm/333560).
 
 Current Zigbee devices:
 - 3x Aqara Water Leak Sensors
