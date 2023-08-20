@@ -1,0 +1,42 @@
+input_select:
+  picture_frame:
+    options:
+      - "Artwork 1"
+      - "Artwork 2"
+      - "Artwork 3"
+      - "Dashboard"
+    name: eInk Artwork
+
+media_player:
+  - platform: universal
+    name: Picture Frame
+    unique_id: livingroom_eink1
+    attributes:
+      source: input_select.picture_frame
+      source_list: input_select.picture_frame|options
+
+homeassistant:
+  customize:
+    media_player.livingroom_eink1:
+      device_class: tv
+
+template:
+  - trigger:
+      platform: time_pattern
+      minutes: "/1"
+    sensor:
+      - name: eInk Dashboard Data
+        unique_id: livingroom_eink1_data
+        state: "OK"
+        attributes:
+          occupancy: >
+            {{ states('binary_sensor.livingroom_motionsensor_occupancy') }}
+          weather_condition_now: >
+            {% set cond_now = states('weather.brisbane_hourly') %}
+            {% if states('sun.sun') == 'below_horizon' %}
+                {% if cond_now == 'sunny' %} night {% elif cond_now == 'partlycloudy' %} night-partly-cloudy {% else %} {{ cond_now }} {% endif %}
+            {% else %}
+                {{ cond_now }}
+            {% endif %}
+          weather_temperature_now: >
+            {{ state_attr('weather.brisbane_hourly', 'forecast')[0].temperature | round }}

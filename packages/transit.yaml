@@ -1,0 +1,15 @@
+# Real Time GTFS for TransLink
+sensor:
+  - platform: gtfs_rt
+    trip_update_url: "https://gtfsrt.api.translink.com.au/api/realtime/SEQ/TripUpdates"
+    vehicle_position_url: "https://gtfsrt.api.translink.com.au/api/realtime/SEQ/VehiclePositions"
+    route_delimiter: "-"
+    departures:
+      - name: Beenleigh Train
+        route: FGBN
+        stopid: !secret outbound_stop
+        icon: mdi:train
+      - name: Brisbane City Train
+        route: BNFG
+        stopid: !secret inbound_stop
+        icon: mdi:train

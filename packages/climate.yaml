@@ -1,0 +1,160 @@
+# Load SmartIR
+smartir:
+
+sensor:
+  # Air Quality
+  # home-assistant.io/integrations/waqi/
+  - platform: waqi
+    token: !secret waqi_api
+    locations:
+      - !secret waqi_site
+
+  - platform: statistics
+    unique_id: pm25_24hr_avg
+    name: "Indoor PM2.5 Average"
+    entity_id: sensor.guestbedroom_purifier_pm25
+    state_characteristic: mean
+    sampling_size: 15000
+    max_age:
+      hours: 24
+
+template:
+  - sensor:
+      - name: "Indoor AQI"
+        unique_id: indoor_aqi
+        state_class: measurement
+        device_class: aqi
+        unit_of_measurement: AQI
+        state: >
+          {% macro aqi(val, val_l, val_h, aqi_l, aqi_h) -%}
+            {{(((aqi_h-aqi_l)/(val_h - val_l) * (val - val_l)) + aqi_l)|round(0)}}
+          {%- endmacro %}
+          {% set v = states('sensor.indoor_pm2_5_average')|round(1) %}
+          {% if v <= 12.0 %}
+            {{aqi(v, 0, 12.0, 0, 50)}}
+          {% elif 12.0 < v <= 35.4 %}
+            {{aqi(v, 12.1, 35.4, 51, 100)}}
+          {% elif 35.4 < v <= 55.4 %}
+            {{aqi(v, 35.5, 55.4, 101, 150)}}
+          {% elif 55.4 < v <= 150.5 %}
+            {{aqi(v, 55.5, 150.4, 151, 200)}}
+          {% elif 150.4 < v <= 250.4 %}
+            {{aqi(v, 150.4, 250.4, 201, 300)}}
+          {% elif 250.5 < v <= 500.4 %}
+            {{aqi(v, 250.5, 500.4, 301, 500)}}
+          {% else %}
+            500
+          {% endif %}
+
+homeassistant:
+  customize:
+    sensor.waqi_brisbane:
+      device_class: aqi
+      unit_of_measurement: AQI
+
+climate:
+  - platform: smartir
+    name: AC
+    unique_id: livingroom_ac
+    device_code: 1120
+    controller_data: remote.livingroom_rm4
+    temperature_sensor: sensor.livingroom_rm4_temperature
+    humidity_sensor: sensor.livingroom_rm4_humidity
+
+# IR controlled fan
+# aaron-powell.com/posts/2022-10-24-building-a-smart-home-part-4-ceiling-fans/
+input_boolean:
+  masterbedroom_fan_state:
+    name: Master Bedroom Fan
+    icon: mdi:fan
+  masterbedroom_fan_osc:
+    name: Master Bedroom Fan Oscillating
+    icon: mdi:fan
+input_number:
+  masterbedroom_fan_speed:
+    name: Master Bedroom Fan Speed
+    icon: mdi:fan
+    step: 1
+    min: 0
+    max: 4
+    mode: slider
+
+fan:
+  - platform: template
+    fans:
+      masterbedroom_fan:
+        friendly_name: "Master Bedroom Fan"
+        unique_id: masterbedroom_fan
+        speed_count: 4
+        value_template: "{{ states('input_boolean.masterbedroom_fan_state') }}"
+        percentage_template: "{{ (100 * (int(states('input_number.masterbedroom_fan_speed'))/6)) | round(0, 'floor') }}"
+        oscillating_template: "{{ states('input_boolean.masterbedroom_fan_osc') }}"
+        turn_on:
+          service: script.masterbedroom_fan_on
+        turn_off:
+          service: script.masterbedroom_fan_off
+        set_oscillating:
+          service: script.masterbedroom_fan_osc
+#        set_percentage:
+#          service: script.fan_set_speed_state
+#          data:
+#            fan: masterbedroom_fan
+#            speed: "{{ percentage }}"
+
+script:
+  masterbedroom_fan_on:
+    alias: Master Bedroom Fan On
+    icon: mdi:fan
+    mode: single
+    sequence:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.masterbedroom_fan
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - service: remote.send_command
+        data:
+          command: b64:JgBQAAABK5IUEhITEhMTEhM2FDYSExITEzYUNRM3EjcTEhMSEzcSNxM2EzYTNxMSEzYTEhMSEzcTEhMSExIUNRMTEjcTNhMSEwAFFwABK0kTAA0F
+        target:
+          entity_id: remote.masterbedroom_rm4
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.masterbedroom_fan_speed
+          value: 2
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.masterbedroom_fan_state
+  masterbedroom_fan_off:
+    alias: Master Bedroom Fan Off
+    icon: mdi:fan
+    mode: single
+    sequence:
+      - service: switch.turn_off
+        target:
+          entity_id: switch.masterbedroom_fan
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.masterbedroom_fan_speed
+          value: 0
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.masterbedroom_fan_state
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.masterbedroom_fan_osc
+  masterbedroom_fan_osc:
+    alias: Master Bedroom Fan Oscillating
+    icon: mdi:fan
+    mode: single
+    sequence:
+      - service: remote.send_command
+        data:
+          command: b64:JgBQAAABKZQTEhMSExITEhM3EjcTEhMSEzcSNxM2EzcTEhMSEzYUNhMSEzYTNxMSExITEhMTEzYTNhMTEhMTNhM2EzcTNhMSEwAFGAABKUoSAA0F
+        target:
+          entity_id: remote.masterbedroom_rm4
+      - service: input_boolean.toggle
+        data:
+          entity_id: input_boolean.masterbedroom_fan_osc

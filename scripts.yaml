@@ -1,0 +1,190 @@
+tv_start:
+  alias: TV Start
+  sequence:
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.livingroom_hifi
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 20
+        milliseconds: 0
+    - service: remote.send_command
+      data:
+        command: b64:JgDgAE0VJhUTFCYVExQnFBMUExUmFRIVExQTFBMAA09NFSYVEhUmFRIVJhUTFBMUJxQTFRIVExQTAANPTRUmFRMUJhUTFCcUExQTFSYVEhUTFBMUEwADT00VJhUTFCYVExQnFBMUExUmFRIVEhUTFBMAA09NFSYVEhUmFRMUJxQTFBMVJhQTFRIVExQTAANPTRUmFRIVJhUTFCYVExQTFSYUExUSFRMUEwADT00VJhUSFSYVExQmFRMUExUmFBMVEhUTFBMAA09NFSYVEhUmFRMUJhUTFBMUJxQTFRIVExQTAA0FAAAAAAAAAAA
+        num_repeats: 1
+        delay_secs: 0.4
+        hold_secs: 0
+      target:
+        entity_id: remote.livingroom_rm4
+      alias: Cold start Sony X80J
+    - if:
+        - condition: state
+          entity_id: media_player.livingroom_hifi_axr85
+          state: "off"
+      then:
+        - delay:
+            hours: 0
+            minutes: 0
+            seconds: 0
+            milliseconds: 500
+        - service: media_player.turn_on
+          data: {}
+          target:
+            entity_id: media_player.livingroom_hifi_axr85
+      alias: Turn on Cambridge AXR85
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 5
+        milliseconds: 0
+    - service: media_player.select_source
+      data:
+        source: Analog 1
+      target:
+        entity_id: media_player.livingroom_hifi_axr85
+      alias: Change Cambridge AXR85 source to TV
+  mode: restart
+  icon: mdi:television
+tv_stop:
+  alias: TV Stop
+  sequence:
+    - parallel:
+        - service: media_player.turn_off
+          data: {}
+          target:
+            entity_id: media_player.livingroom_hifi_axr85
+          alias: Turn off Cambridge AXR85
+        - if:
+            - condition: state
+              entity_id: media_player.livingroom_hifi_ubpx700
+              state: "on"
+          then:
+            - delay:
+                hours: 0
+                minutes: 0
+                seconds: 0
+                milliseconds: 250
+            - service: media_player.turn_off
+              data: {}
+              target:
+                entity_id: media_player.livingroom_hifi_ubpx700
+          alias: Turn off Sony UBPX700
+        - if:
+            - condition: state
+              entity_id: media_player.livingroom_hifi_x80j
+              state: "on"
+          then:
+            - service: media_player.turn_off
+              data: {}
+              target:
+                entity_id: media_player.livingroom_hifi_x80j
+          alias: Turn off Sony X80J
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 10
+        milliseconds: 0
+    - service: switch.turn_off
+      data: {}
+      target:
+        entity_id: switch.livingroom_hifi
+    - service: input_select.select_option
+      data:
+        option: TV
+      target:
+        entity_id: input_select.tv_source_list
+  mode: restart
+  icon: mdi:television
+livingroom_hifi_appletv_on:
+  alias: Apple TV On
+  mode: single
+  icon: mdi:apple
+  sequence:
+    - service: remote.send_command
+      target:
+        entity_id: remote.livingroom_hifi_appletv
+      data:
+        delay_secs: 1
+        command:
+          - home
+livingroom_hifi_appletv_off:
+  alias: Apple TV Off
+  mode: single
+  icon: mdi:apple
+  sequence:
+    - service: remote.send_command
+      target:
+        entity_id: remote.livingroom_hifi_appletv
+      data:
+        delay_secs: 1
+        command:
+          - home_hold
+          - select
+phono_start:
+  alias: Listen to a Record
+  sequence:
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.livingroom_hifi
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - if:
+        - condition: state
+          entity_id: media_player.livingroom_hifi_axr85
+          state: "off"
+      then:
+        - service: media_player.turn_on
+          data: {}
+          target:
+            entity_id: media_player.livingroom_hifi_axr85
+      alias: Turn on Cambridge AXR85
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 5
+        milliseconds: 0
+    - service: media_player.select_source
+      data:
+        source: Phono
+      target:
+        entity_id: media_player.livingroom_hifi_axr85
+    - if:
+        - condition: state
+          entity_id: media_player.livingroom_hifi_x80j
+          state: "on"
+      then:
+        - service: media_player.turn_off
+          data: {}
+          target:
+            entity_id: media_player.livingroom_hifi_x80j
+        - service: input_select.select_option
+          data:
+            option: TV
+          target:
+            entity_id: input_select.tv_source_list
+    - if:
+        - condition: state
+          entity_id: media_player.livingroom_hifi_ubpx700
+          state: "on"
+      then:
+        - service: media_player.turn_off
+          data: {}
+          target:
+            entity_id: media_player.livingroom_hifi_ubpx700
+    - if:
+        - condition: state
+          entity_id: media_player.hifi
+          state: "on"
+      then:
+        - service: media_player.media_pause
+          data: {}
+          target:
+            entity_id: media_player.hifi
+  icon: mdi:record-player
+  mode: single

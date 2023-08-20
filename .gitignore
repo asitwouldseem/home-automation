@@ -1,0 +1,34 @@
+# Example .gitignore file for your config dir.
+
+# Sensitive folders
+.storage
+.cloud
+.google.token
+
+# SQLite
+home-assistant.db
+home-assistant_v2.db
+home-assistant_v2.db-*
+
+# ZHA
+zigbee.db
+zigbee.db-shm
+zigbee.db-wal
+
+# Automatically downloaded dependencies
+deps
+lib
+www
+custom_components/
+blueprints/
+tts/
+
+# Log files
+home-assistant.log*
+.HA_VERSION
+watchman_report.txt
+
+# Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
+ip_bans.yaml
+secrets.yaml
+known_devices.yaml

@@ -1,0 +1,18 @@
+sensor:
+  # VM Monitoring
+  # home-assistant.io/integrations/systemmonitor/
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /config
+      - type: memory_use_percent
+
+  # Waste Collection
+  # github.com/mark1foley/Brisbane-Bin-Day-Sensor
+  - platform: bne_wc
+    name: Brisbane Bin Day
+    scan_interval: 300
+    base_url: https://www.data.brisbane.qld.gov.au/data/api/3/action/datastore_search?resource_id=
+    days_table: adcb0791-71f1-4b0e-bb6f-b375ac244896
+    weeks_table: c6dbb0b3-1e00-4bb8-8776-aa1b8f1ecfaa
+    property_number: !secret property_number

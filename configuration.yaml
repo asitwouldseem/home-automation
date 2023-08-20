@@ -1,0 +1,64 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+
+homeassistant:
+  name: "Home"
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  elevation: !secret home_elevation
+  time_zone: "Australia/Brisbane"
+  unit_system: metric
+  packages: !include_dir_named packages
+
+# Custom history
+# home-assistant.io/integrations/history
+recorder:
+  purge_keep_days: 14
+  exclude:
+    entities:
+      - sensor.watchman_last_updated
+      - sensor.brisbane_city_train
+      - sensor.beenleigh_train
+      - light.adaptive_lighting
+      - light.timer_lights
+      - switch.livingroom_hifi_fan
+    entity_globs:
+      - automation.*
+      - weather.*
+      - script.*
+
+# Enable OTA updates for ZHA
+# home-assistant.io/integrations/zha
+zha:
+  zigpy_config:
+    ota:
+      ikea_provider: true
+      otau_directory: /partials/zigpy_ota
+
+# Add LMS to sidebar
+# home-assistant.io/integrations/panel_iframe
+panel_iframe:
+  music:
+    title: "Music"
+    url: "http://10.0.1.100:9000/material"
+    icon: mdi:music
+
+# Adjust light temperature throughout the day
+# github.com/basnijholt/adaptive-lighting
+adaptive_lighting:
+  lights:
+    - light.adaptive_lighting
+  sleep_brightness: 1
+  sleep_color_temp: 2200
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml

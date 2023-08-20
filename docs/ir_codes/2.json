@@ -1,0 +1,15 @@
+{
+    "manufacturer": "Sony",
+    "supportedModels": [
+        "UPBX-700"
+    ],
+    "supportedController": "Broadlink",
+    "commandsEncoding": "Base64",
+    "commands": {
+        "off": "JgAvAE8TJxMnEycTJxMTEycTExMTEycTExMnEycTExMnExMTExMTEycTJxMnAAF2AAAADQUAAAAAAAAA",
+        "on": "JgAvAE8TExMnEycTJxMTEycTExMTEycTExMnEycTExMnExMTExMTEycTJxMnAAGJAAAADQUAAAAAAAAA",
+        "play": "JgAvAE8TExMnExMTJxMnExMTExMTEycTExMnEycTExMnExMTExMTEycTJxMnAAGdAAAADQUAAAAAAAAA",
+        "pause": "JgAvAE8TJxMTExMTJxMnExMTExMTEycTExMnEycTExMnExMTExMTEycTJxMnAAGdAAAADQUAAAAAAAAA",
+        "stop": "JgAsAE8TExMTExMTJxMnExMTExMTEycTExMnEycTExMnExMTExMTEycTJxMnAAGxDQUAAAAAAAAAAAAA"
+    }
+}

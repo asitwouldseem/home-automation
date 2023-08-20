@@ -1,0 +1,49 @@
+esphome:
+  friendly_name: 'hifi-fan'
+  name: esphome-web-148771
+
+esp8266:
+  board: d1_mini
+
+# Enable logging
+logger:
+
+switch:
+  - platform: gpio
+    pin: D5
+    name: 'HiFi Fan'
+    id: livingroom_hifi_fan
+    restore_mode: ALWAYS_OFF
+
+# Dallas sensors
+dallas:
+  - pin: D4
+
+sensor:
+  - platform: dallas
+    address: 0x583cf5e38175f728
+    name: 'Amplifier Temperature'
+    id: livingroom_hifi_fan_temperature
+    on_value_range:
+      - above: 28.0
+        then:
+          - switch.turn_on: livingroom_hifi_fan
+      - below: 26.0
+        then:
+          - switch.turn_off: livingroom_hifi_fan
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: 'Esphome-Web-148771'
+    password: "wh7FtH8Im8RK"
+
+captive_portal:

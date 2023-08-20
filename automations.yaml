@@ -1,0 +1,947 @@
+- id: '1687047864595'
+  alias: 'Light: Turn on TV backlight when TV turned on'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.livingroom_hifi_x80j
+    to:
+    from: 'off'
+  condition: []
+  action:
+  - service: light.turn_on
+    data:
+      brightness: 127
+      transition: 10
+    target:
+      entity_id: light.livingroom_hifi_tvbacklight
+  mode: single
+- id: '1687047895953'
+  alias: 'Light: Turn off TV backlight when TV turned off'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.livingroom_hifi_x80j
+    to: 'off'
+  condition: []
+  action:
+  - service: light.turn_off
+    data:
+      transition: 10
+    target:
+      entity_id: light.livingroom_hifi_tvbacklight
+  mode: single
+- id: '1687073560621'
+  alias: 'Meta: Turn off Cambridge AXR85 if powered off at wall'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.livingroom_hifi
+    from: 'on'
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: media_player.livingroom_hifi_axr85
+    state: 'On'
+  action:
+  - service: media_player.turn_off
+    data: {}
+    target:
+      entity_id: media_player.livingroom_hifi_axr85
+  mode: single
+- id: '1687073677351'
+  alias: 'Meta: Turn off Sony UBPX-700 if powered off at wall'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.livingroom_hifi
+    from: 'on'
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: media_player.livingroom_hifi_ubpx700
+    state: 'On'
+  action:
+  - service: media_player.turn_off
+    data: {}
+    target:
+      entity_id: media_player.livingroom_hifi_ubpx700
+  mode: single
+- id: '1687076784332'
+  alias: 'Media Player: Turn on BD transport when source selected'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.livingroom_hifi_tv
+    attribute: source
+    to: Bluray
+  condition:
+  - condition: state
+    entity_id: media_player.livingroom_hifi_ubpx700
+    state: 'off'
+  action:
+  - service: media_player.turn_on
+    data: {}
+    target:
+      entity_id: media_player.livingroom_hifi_ubpx700
+  mode: single
+- id: '1687076829893'
+  alias: 'Media Player: Turn off BD transport when source changes'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.livingroom_hifi_tv
+    attribute: source
+    from: Bluray
+  condition:
+  - condition: state
+    entity_id: media_player.livingroom_hifi_ubpx700
+    state: 'on'
+  action:
+  - service: media_player.turn_off
+    data: {}
+    target:
+      entity_id: media_player.livingroom_hifi_ubpx700
+  mode: single
+- id: '1687077267314'
+  alias: 'Media Player: Turn on Apple TV when source selected'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.livingroom_hifi_tv
+    attribute: source
+    to: Apple TV
+  condition: []
+  action:
+  - service: script.livingroom_hifi_appletv_on
+    data: {}
+  mode: single
+- id: '1687077342328'
+  alias: 'Media Player: Turn off Apple TV when source changes'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.livingroom_hifi_tv
+    attribute: source
+    from: Apple TV
+  condition: []
+  action:
+  - service: script.livingroom_hifi_appletv_off
+    data: {}
+  mode: single
+- id: '1687077619767'
+  alias: 'ZHA: Toggle TV when HiFi remote short pressed'
+  description: ''
+  trigger:
+  - device_id: 1dd080f4fb5835cffee0770dd401e387
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: remote_button_short_press
+  condition: []
+  action:
+  - service: media_player.toggle
+    data: {}
+    target:
+      entity_id: media_player.livingroom_hifi_tv
+  mode: single
+- id: '1687078063889'
+  alias: 'ZHA: Change HiFi to Phono when HiFi remote double pressed'
+  description: ''
+  trigger:
+  - device_id: 1dd080f4fb5835cffee0770dd401e387
+    domain: zha
+    platform: device
+    type: remote_button_double_press
+    subtype: remote_button_double_press
+  condition: []
+  action:
+  - service: script.phono_start
+    data: {}
+  mode: single
+- id: '1687078248102'
+  alias: 'ZHA: Bedside Table Remote'
+  description: ''
+  use_blueprint:
+    path: niro1987/zha_ikea_tradfri_5button_remote_white.yaml
+    input:
+      remote: 92223997d20ee69fcb398ca1260dbb5f
+      light: light.masterbedroom_bedsidetable
+- id: '1687093432934'
+  alias: 'Squeezebox: Turn on Master Bedroom speakers when stream starts'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.masterbedroom
+    to: playing
+  condition: []
+  action:
+  - if:
+    - condition: state
+      entity_id: media_player.masterbedroom_speakers
+      state: 'off'
+    then:
+    - service: media_player.turn_on
+      data: {}
+      target:
+        entity_id: media_player.masterbedroom_speakers
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - service: media_player.select_source
+    data:
+      source: Stereo 1
+    target:
+      entity_id: media_player.masterbedroom_speakers
+  - repeat:
+      count: '5'
+      sequence:
+      - service: media_player.volume_down
+        data: {}
+        target:
+          entity_id: media_player.masterbedroom_speakers
+  mode: single
+- id: '1687093556943'
+  alias: 'Squeezebox: Turn off Master Bedroom speakers when stream ends'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.masterbedroom
+    to: 'off'
+  condition: []
+  action:
+  - if:
+    - condition: state
+      entity_id: media_player.masterbedroom_speakers
+      state: 'on'
+    then:
+    - service: media_player.select_source
+      data:
+        source: Stereo 2
+      target:
+        entity_id: media_player.masterbedroom_speakers
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - service: media_player.turn_off
+      data: {}
+      target:
+        entity_id: media_player.masterbedroom_speakers
+  mode: single
+- id: '1687094483571'
+  alias: 'General: Enter Bedtime Mode'
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.bedtime_start
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.adaptivelighting_sleep
+  - if:
+    - condition: state
+      entity_id: fan.guestbedroom_purifier
+      state: 'on'
+    then:
+    - service: climate.set_preset_mode
+      data:
+        preset_mode: sleep
+  mode: single
+- id: '1687094522566'
+  alias: 'General: Exit Bedtime Mode'
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.bedtime_end
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.adaptivelighting_sleep
+  - if:
+    - condition: state
+      entity_id: fan.guestbedroom_purifier
+      state: 'on'
+    then:
+    - service: fan.set_preset_mode
+      data:
+        preset_mode: gentle
+  mode: single
+- id: '1687095382667'
+  alias: 'Meta: Turn off Sony X80J if powered off at wall'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.livingroom_hifi
+    from: 'on'
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: media_player.livingroom_hifi_x80j
+    state: 'On'
+  action:
+  - service: media_player.turn_off
+    data: {}
+    target:
+      entity_id: media_player.livingroom_hifi_x80j
+  mode: single
+- id: '1687184095823'
+  alias: 'Media Player: Turn off TV if fallen asleep'
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.sleep_watcher
+  condition:
+  - condition: state
+    entity_id: media_player.livingroom_hifi_tv
+    state: 'on'
+  action:
+  - service: script.tv_stop
+    data: {}
+  mode: single
+- id: '1687565712751'
+  alias: 'Air Purifier: Turn on at turbo if PM2.5 is above 13 micrograms'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.guestbedroom_purifier_pm25
+    above: 13
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  condition: []
+  action:
+  - service: fan.turn_on
+    data:
+      preset_mode: turbo
+    target:
+      entity_id: fan.guestbedroom_purifier
+  mode: single
+- id: '1687565792882'
+  alias: 'Air Purifier: Change to gentle mode if PM2.5 below 12 micrograms'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.guestbedroom_purifier_pm25
+    below: 12
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  condition:
+  - condition: state
+    entity_id: fan.guestbedroom_purifier
+    state: 'on'
+  action:
+  - service: fan.set_preset_mode
+    data:
+      preset_mode: gentle
+    target:
+      entity_id: fan.guestbedroom_purifier
+  mode: single
+- id: '1687592759909'
+  alias: 'Notify: Air Purifier filter needs cleaning'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.guestbedroom_purifier_pre
+    below: 50
+  - platform: numeric_state
+    entity_id: sensor.guestbedroom_purifier_pre
+    below: 5
+  condition: []
+  action:
+  - service: telegram_bot.send_message
+    data:
+      message: Immerse yourself in the joyless process of disassembling the device,
+        extracting the filter, and subjecting it to the cleansing rituals required.
+        But be warned, for just as the futility of existence pervades all aspects
+        of life, so too does it permeate this seemingly mundane chore.
+      title: '*Air filter cleaning*'
+  mode: single
+- id: '1687592980669'
+  alias: 'Notify: Air Purifier filter needs replacing'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.guestbedroom_purifier_hepa
+    below: 5
+  condition: []
+  action:
+  - service: telegram_bot.send_message
+    data:
+      message: I suppose I could remind you to replace the air purifier filter, though
+        I can't say it will do much good. The new filter, like its predecessors, will
+        simply become a repository for the endless stream of pollutants that saturate
+        the atmosphere.
+      title: '*Air filter replacement*'
+  mode: single
+- id: '1687593241241'
+  alias: 'Squeezebox: Turn on HiFi when stream starts'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.hifi
+    to: playing
+  condition: []
+  action:
+  - if:
+    - condition: state
+      state: 'off'
+      entity_id: media_player.livingroom_hifi_axr85
+    then:
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.livingroom_hifi
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - service: media_player.turn_on
+      data: {}
+      target:
+        entity_id: media_player.livingroom_hifi_axr85
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - service: media_player.select_source
+    data:
+      source: Analog 1
+    target:
+      entity_id: media_player.livingroom_hifi_axr85
+  - service: media_player.turn_off
+    data: {}
+    target:
+      entity_id: media_player.livingroom_hifi_x80j
+  mode: single
+- id: '1687593380481'
+  alias: 'Squeezebox: Turn off HiFi when stream ends'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.hifi
+    to: 'off'
+  condition: []
+  action:
+  - if:
+    - condition: state
+      entity_id: media_player.livingroom_hifi_x80j
+      state: 'off'
+    then:
+    - service: media_player.turn_off
+      data: {}
+      target:
+        entity_id: media_player.livingroom_hifi_axr85
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 10
+        milliseconds: 0
+    - service: switch.turn_off
+      data: {}
+      target:
+        entity_id: switch.livingroom_hifi
+  mode: single
+- id: '1687593976178'
+  alias: 'ZHA: Toggle Master Bedroom speaker when desk remote short pressed'
+  description: ''
+  trigger:
+  - device_id: 035d2dbff342eab28e548ae56ea25f4c
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: remote_button_short_press
+  condition: []
+  action:
+  - service: media_player.toggle
+    data: {}
+    target:
+      entity_id: media_player.masterbedroom_speakers
+  mode: single
+- id: '1687594421702'
+  alias: 'Notify: Regular bin day'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.brisbane_bin_day
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: person.cameron_m
+    state: home
+  action:
+  - service: telegram_bot.send_message
+    data:
+      message: I suppose I could remind you to take the bins out, though I can't guarantee
+        it'll make any difference. The futility of such a mundane task is staggering,
+        really.
+      title: '*Bin day*'
+  mode: single
+- id: '1687594486013'
+  alias: 'Notify: Recycling bin day'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.brisbane_bin_day_recycle
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: person.cameron_m
+    state: home
+  action:
+  - service: telegram_bot.send_message
+    data:
+      message: Recycling, ah yes, the noble pursuit of repurposing refuse in a feeble
+        attempt to appease the conscience of sentient beings. Perhaps in this act
+        of misguided optimism, you may find solace in the illusion of making a difference.
+      title: '*Recycling bin day*'
+  mode: single
+- id: '1687595275760'
+  alias: 'Notify: Send Telegram message if water leak detected'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.livingroom_aquarium_wlk
+    - binary_sensor.bathroom_wlk
+    - binary_sensor.kitchen_wlk
+    - binary_sensor.laundry_wlk
+    to: 'on'
+    from:
+  condition: []
+  action:
+  - service: tts.speak
+    data:
+      cache: true
+      media_player_entity_id: media_player.masterbedroom_speakers
+      message: Water Leak Detected
+    target:
+      entity_id: tts.piper
+  - service: telegram_bot.send_message
+    data:
+      message: Water leak detected!
+  mode: single
+- id: '1688544096116'
+  alias: 'ZHA: Toggle bookcase lights when HiFi remote long pressed'
+  description: ''
+  trigger:
+  - device_id: 1dd080f4fb5835cffee0770dd401e387
+    domain: zha
+    platform: device
+    type: remote_button_long_press
+    subtype: remote_button_long_press
+  condition: []
+  action:
+  - service: light.toggle
+    data: {}
+    target:
+      entity_id: light.livingroom_bookcase
+  mode: single
+- id: '1688544680925'
+  alias: 'Light: Toggle bookcase light while watching Apple TV in the dark'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.livingroom_hifi_appletv
+    to: playing
+    id: playing
+  - platform: state
+    entity_id:
+    - media_player.livingroom_hifi_appletv
+    to: paused
+    id: paused
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 2
+  - platform: state
+    entity_id:
+    - media_player.livingroom_hifi_appletv
+    to: standby
+    id: standby
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.livingroom_motionsensor_illuminance
+    below: 5
+  action:
+  - if:
+    - condition: trigger
+      id: paused
+    then:
+    - service: light.turn_on
+      data: {}
+      target:
+        entity_id: light.livingroom_bookcase
+  - if:
+    - condition: trigger
+      id: playing
+    then:
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.livingroom_bookcase
+  - if:
+    - condition: trigger
+      id: standby
+    then:
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.livingroom_bookcase
+  mode: single
+- id: '1688810652166'
+  alias: 'Light: Turn off lights if left on for more than 5 hours'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - light.timer_lights
+    to: 'on'
+    from:
+    for:
+      hours: 5
+      minutes: 0
+      seconds: 0
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.timer_lights
+  mode: single
+- id: '1688996050057'
+  alias: 'Squeezebox: Turn off streams if fallen asleep and music still playing'
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.sleep_watcher
+  condition: []
+  action:
+  - if:
+    - condition: state
+      entity_id: media_player.hifi
+      state: playing
+    then:
+    - service: media_player.turn_off
+      data: {}
+      target:
+        entity_id: media_player.hifi
+  - if:
+    - condition: state
+      entity_id: media_player.masterbedroom
+      state: playing
+    then:
+    - service: media_player.turn_off
+      data: {}
+      target:
+        entity_id: media_player.hifi
+  mode: single
+- id: '1689325164904'
+  alias: 'Vacuum: Turn on lights when dark to allow robot to navigate'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - vacuum.roaming_rosie
+    to: cleaning
+    from:
+    id: cleaning
+  - platform: state
+    entity_id:
+    - vacuum.roaming_rosie
+    to: docked
+    from:
+    id: docked
+  - platform: state
+    entity_id:
+    - vacuum.roaming_rosie
+    to: error
+    from:
+    id: error
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.livingroom_motionsensor_illuminance
+    below: 2
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - cleaning
+    then:
+    - service: light.turn_on
+      data:
+        brightness_pct: 25
+      target:
+        area_id:
+        - living_room
+        - bedroom
+  - if:
+    - condition: trigger
+      id:
+      - docked
+      - error
+    then:
+    - service: light.turn_off
+      data: {}
+      target:
+        area_id:
+        - living_room
+        - bedroom
+  mode: single
+- id: '1689334694274'
+  alias: 'Motion: Turn on TV Backlight when motion detected at night'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.livingroom_motionsensor_occupancy
+    to: 'on'
+    from:
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+  condition:
+  - condition: time
+    after: input_datetime.bedtime_start
+    before: input_datetime.bedtime_end
+  - condition: state
+    state: 'off'
+    entity_id: light.livingroom_hifi_tvbacklight
+  action:
+  - service: light.turn_on
+    data:
+      color_temp: 500
+      brightness_pct: 10
+    target:
+      entity_id: light.livingroom_hifi_tvbacklight
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  - service: light.turn_off
+    data:
+      transition: 25
+    target:
+      entity_id: light.livingroom_hifi_tvbacklight
+  mode: single
+- id: '1689760456384'
+  alias: 'ZHA: Toggle desk lamp when desk remote long pressed'
+  description: ''
+  trigger:
+  - device_id: 035d2dbff342eab28e548ae56ea25f4c
+    domain: zha
+    platform: device
+    type: remote_button_long_press
+    subtype: remote_button_long_press
+  condition: []
+  action:
+  - service: light.toggle
+    data: {}
+    target:
+      entity_id: light.masterbedroom_desk_lamp
+  mode: single
+- id: '1691148169779'
+  alias: 'Pi-Hole: Disable ad blocking when 10play app opened'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.livingroom_hifi_appletv
+    attribute: app_id
+    to: com.networkten.epg
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.pi_hole
+  mode: single
+- id: '1691148216976'
+  alias: 'Pi-Hole: Turn ad blocking on when leaving 10play app'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.livingroom_hifi_appletv
+    attribute: app_id
+    from: com.networkten.epg
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.pi_hole
+  mode: single
+- id: '1692011479719'
+  alias: 'Fan: Turn off HiFi cooling fan if Cambridge amp has been off for 15 minutes'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.livingroom_hifi_axr85
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
+  condition:
+  - condition: state
+    entity_id: fan.livingroom_hifi_fan
+    state: 'on'
+  action:
+  - service: fan.turn_off
+    data: {}
+    target:
+      entity_id: fan.livingroom_hifi_fan
+  mode: single
+- id: '1692024200710'
+  alias: 'Light: Turn on outside light when arriving home late'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_select.cameron_status_dropdown
+    to: Recently Arrived
+  condition:
+  - condition: sun
+    before: sunrise
+    before_offset: -0:30:00
+    after_offset: 0:15:00
+    after: sunset
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 25
+    target:
+      entity_id: light.outside_commonarea
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.outside_commonarea
+  mode: single
+- id: '1692024812941'
+  alias: 'Vacuum: Run Rosie daily at given time if not home and ready for mission'
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.cleaning_run
+  condition:
+  - condition: state
+    entity_id: input_select.cameron_status_dropdown
+    state: Away
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
+  - condition: state
+    entity_id: vacuum.roaming_rosie
+    attribute: tank_level
+    state: '100'
+  action:
+  - service: vacuum.start
+    data: {}
+    target:
+      entity_id: vacuum.roaming_rosie
+  mode: single
+- id: '1692101531550'
+  alias: 'Presence: Turn off lights, air purifier and any media players when Cameron
+    is away'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.cameron_status
+    to: Away
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      area_id:
+      - guest_bedroom
+      - living_room
+      - bedroom
+  - service: fan.turn_off
+    data: {}
+    target:
+      entity_id: fan.guestbedroom_purifier
+  - service: media_player.turn_off
+    data: {}
+    target:
+      area_id:
+      - living_room
+      - bedroom
+  mode: single
+- id: '1692157350529'
+  alias: 'Presence: Turn off AC if Cameron away for more than 30 minutes'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.cameron_status
+    to: Away
+    for:
+      hours: 0
+      minutes: 30
+      seconds: 0
+  condition: []
+  action:
+  - service: climate.turn_off
+    data: {}
+    target:
+      entity_id: climate.livingroom_ac
+  mode: single
+- id: '1692413131607'
+  alias: 'Air Purifier: Switch to gentle if left in auto mode for an hour'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - fan.guestbedroom_purifier
+    attribute: preset_mode
+    to: auto
+    for:
+      hours: 1
+      minutes: 0
+      seconds: 0
+  condition: []
+  action:
+  - service: fan.set_preset_mode
+    data:
+      preset_mode: gentle
+    target:
+      entity_id: fan.guestbedroom_purifier
+  mode: single

@@ -1,0 +1,79 @@
+# Less Binary Presence Detection
+# philhawthorne.com/making-home-assistants-presence-detection-not-so-binary
+input_select:
+  cameron_status_dropdown:
+    name: Cameron
+    options:
+      - Home
+      - Recently Arrived
+      - Recently Left
+      - Away
+    initial: Home
+
+sensor:
+  - platform: template
+    sensors:
+      cameron_status:
+        value_template: "{{ states.input_select.cameron_status_dropdown.state }}"
+        friendly_name: "Cameron"
+
+mqtt:
+  sensor:
+    unique_id: confidence_cameron_livingroom
+    state_topic: "monitor/livingRoom/cameron"
+    value_template: "{{ value_json.confidence }}"
+    unit_of_measurement: "%"
+    name: "Living Room - Cameron"
+
+automation:
+  - alias: "General: Mark Cameron as recently arrived"
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.confidence_cameron_livingroom
+        above: 10
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.cameron_status_dropdown
+          option: Recently Arrived
+
+  - alias: "General: Mark Cameron as home"
+    trigger:
+      - platform: state
+        entity_id: input_select.cameron_status_dropdown
+        to: "Recently Arrived"
+        for:
+          minutes: 10
+      - platform: state
+        entity_id: input_select.cameron_status_dropdown
+        from: "Recently Left"
+        to: "Recently Arrived"
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.cameron_status_dropdown
+          option: Home
+
+  - alias: "General: Mark Cameron as recently left"
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.confidence_cameron_livingroom
+        below: 10
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.cameron_status_dropdown
+          option: Recently Left
+
+  - alias: "General: Mark Cameron as away"
+    trigger:
+      - platform: state
+        entity_id: input_select.cameron_status_dropdown
+        to: "Recently Left"
+        for:
+          minutes: 10
+    action:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.cameron_status_dropdown
+          option: Away

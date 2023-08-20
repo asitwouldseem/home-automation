@@ -1,0 +1,34 @@
+homekit:
+  - name: Home Assistant
+    port: 21064
+    filter:
+      include_domains:
+        - climate
+        - light
+        - switch
+      include_entities:
+        - sensor.livingroom_rm4_temperature
+        - sensor.masterbedroom_rm4_temperature
+        - sensor.livingroom_hifi_fan_temperature
+        - sensor.livingroom_rm4_humidity
+        - sensor.masterbedroom_rm4_humidity
+        - sensor.guestbedroom_purifier_pm25
+        - binary_sensor.livingroom_motionsensor_occupancy
+        - fan.masterbedroom_fan
+        - fan.guestbedroom_purifier
+        - fan.livingroom_hifi_fan
+      exclude_entities:
+        - switch.voip_allowcalls
+        - switch.masterbedroom_fan
+        - light.adaptive_lighting
+        - light.timer_lights
+        - light.presence_simulation
+
+homeassistant:
+  customize:
+    binary_sensor.livingroom_motionsensor_occupancy:
+      device_class: occupancy
+
+    sensor.guestbedroom_purifier_pm25:
+      icon: pap:pm25
+      device_class: pm25

@@ -1,0 +1,147 @@
+input_select:
+  tv_source_list:
+    options:
+      - "Apple TV"
+      - "Bluray"
+      - "HTPC"
+      - "TV"
+    name: Living Room TV
+
+# Check BD Transport Manual Off/On
+binary_sensor:
+  - platform: ping
+    name: ubpx700_ping
+    host: !secret ubpx700_ping
+    scan_interval: 30
+
+media_player:
+  - platform: smartir
+    name: Cambridge AXR85
+    unique_id: livingroom_hifi_axr85
+    device_code: 1
+    controller_data: remote.livingroom_rm4
+
+  - platform: smartir
+    name: Sony UBPX700
+    unique_id: livingroom_hifi_ubpx700
+    device_code: 2
+    controller_data: remote.livingroom_rm4
+    power_sensor: binary_sensor.ubpx700_ping
+
+  - platform: smartir
+    name: Apple iPod
+    unique_id: masterbedroom_ipod
+    device_code: 3
+    controller_data: remote.masterbedroom_rm4
+
+  - platform: smartir
+    name: Master Bedroom Speakers
+    unique_id: masterbedroom_speakers
+    device_code: 1460
+    controller_data: remote.masterbedroom_rm4
+
+  # Living Room TV
+  - platform: universal
+    name: Living Room TV
+    unique_id: livingroom_hifi_tv
+    device_class: tv
+    children:
+      - media_player.livingroom_hifi_x80j
+    commands:
+      turn_on:
+        service: script.tv_start
+      turn_off:
+        service: script.tv_stop
+      volume_up:
+        service: media_player.volume_up
+        target:
+          entity_id: media_player.livingroom_hifi_axr85
+      volume_down:
+        service: media_player.volume_down
+        target:
+          entity_id: media_player.livingroom_hifi_axr85
+      volume_mute:
+        service: media_player.volume_mute
+        target:
+          entity_id: media_player.livingroom_hifi_axr85
+      select_source:
+        service: script.tv_change_source
+        data_template:
+          source: "{{ source }}"
+    attributes:
+      source: input_select.tv_source_list
+      source_list: input_select.tv_source_list|options
+
+homeassistant:
+  customize:
+    media_player.livingroom_hifi_axr85:
+      device_class: tv
+
+    media_player.masterbedroom_speakers:
+      device_class: tv
+
+    media_player.livingroom_hifi_ubpx700:
+      device_class: receiver
+
+homekit:
+  - name: Cambridge AXR85
+    mode: accessory
+    port: 21065
+    filter:
+      include_entities:
+        - media_player.livingroom_hifi_axr85
+
+  - name: Living Room TV
+    mode: accessory
+    port: 21066
+    filter:
+      include_entities:
+        - media_player.livingroom_hifi_tv
+
+  - name: Master Bedroom Speakers
+    mode: accessory
+    port: 21068
+    filter:
+      include_entities:
+        - media_player.masterbedroom_speakers
+
+    media_player.livingroom_hifi_axr85:
+      name: "Cambridge AXR85"
+      feature_list:
+        - feature: on_off
+        - feature: toggle_mute
+
+    media_player.masterbedroom_speakers:
+      name: "Master Bedroom Speakers"
+      feature_list:
+        - feature: on_off
+        - feature: toggle_mute
+
+    media_player.livingroom_hifi_tv:
+      name: "Living Room TV"
+      feature_list:
+        - feature: on_off
+        - feature: toggle_mute
+        - feature: play_pause
+
+script:
+  # Friendly source list using input_select
+  tv_change_source:
+    alias: Living Room TV source mapping
+    icon: mdi:remote-tv
+    sequence:
+      - service: input_select.select_option
+        data_template:
+          entity_id: input_select.tv_source_list
+          option: >
+            {{ source }}
+      - service: media_player.select_source
+        data_template:
+          entity_id: media_player.livingroom_hifi_x80j
+          source: >
+            {% set mapper = {
+              'Bluray':'HDMI 1',
+              'HTPC':'HDMI 2',
+              'Apple TV':'HDMI 3 (eARC/ARC)',
+              'TV':'TV'} %}
+            {{ mapper[source] if source in mapper else 'HDMI 1' }}

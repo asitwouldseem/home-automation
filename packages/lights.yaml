@@ -1,0 +1,160 @@
+light:
+  - platform: template
+    lights:
+      livingroom_bookcase:
+        friendly_name: "Bookcase"
+        effect_list_template: "{{ state_attr('input_select.bookcase_light_effects', 'options') }}"
+        effect_template: "{{ states('input_select.bookcase_light_effects') }}"
+        turn_on:
+          service: remote.send_command
+          data:
+            command: b64:JgBQAAABJpQSExMTEhMSExITEhMSExIUEjcSNxI3EzcSNxI3EzcSNxI3ExMSNxITEhMSExI3ExMSExI3EhMSOBI3EjcSExM3EgAFFwABKEoTAA0F
+          target:
+            entity_id: remote.livingroom_rm4
+        turn_off:
+          service: remote.send_command
+          data:
+            command: b64:JgBYAAABJpQSExMTEhMSExITEhMSExITEzcSNxI3EjgROBM2EjgSNxE4EzcSNxITEhMSExM3ERQSExITERQTNxI3EjcSExI4EgAFGAABJ0sSAAxHAAEoShEADQU=
+          target:
+            entity_id: remote.livingroom_rm4
+        set_effect:
+          - service: script.turn_on
+            data:
+              entity_id: "script.ir_effect_{{ effect }}"
+              variables:
+                remote: "remote.livingroom_rm4"
+
+      masterbedroom_bowl:
+        friendly_name: "Bowl"
+        effect_list_template: "{{ state_attr('input_select.bowl_light_effects', 'options') }}"
+        effect_template: "{{ states('input_select.bowl_light_effects') }}"
+        turn_on:
+          service: remote.send_command
+          data:
+            command: b64:JgBQAAABJpQSExMTEhMSExITEhMSExIUEjcSNxI3EzcSNxI3EzcSNxI3ExMSNxITEhMSExI3ExMSExI3EhMSOBI3EjcSExM3EgAFFwABKEoTAA0F
+          target:
+            entity_id: remote.masterbedroom_rm4
+        turn_off:
+          service: remote.send_command
+          data:
+            command: b64:JgBYAAABJpQSExMTEhMSExITEhMSExITEzcSNxI3EjgROBM2EjgSNxE4EzcSNxITEhMSExM3ERQSExITERQTNxI3EjcSExI4EgAFGAABJ0sSAAxHAAEoShEADQU=
+          target:
+            entity_id: remote.masterbedroom_rm4
+        set_effect:
+          - service: script.turn_on
+            data:
+              entity_id: "script.ir_effect_{{ effect }}"
+              variables:
+                remote: "remote.masterbedroom_rm4"
+
+script:
+  ir_effect_combination:
+    alias: Comination effect
+    icon: mdi:alarm-light-outline
+    sequence:
+      - service: remote.send_command
+        data:
+          command: b64:JgBYAAABOJMUEhQSFBIUEhQSFBIUEhQSFTUVNhQ2FDYVNRU2FDYVNRUSFBIUNhURFBIUEhQ2FREVNRU2FBIUNhU1FTYUEhQ2FAAFCwABN0kWAAwnAAE8SRUADQU=
+        target:
+          entity_id: "{{ remote }}"
+
+  ir_effect_wave:
+    alias: Wave effect
+    icon: mdi:alarm-light-outline
+    sequence:
+      - service: remote.send_command
+        data:
+          command: b64:JgBQAAABPJMVERURFREVERURFREVERUSFDYVNRU1FTYVNRU2FTUWNRU2FTUVERUSFREVERY1FREVEhURFTYVNRU2FTUVEhU1FQAFGQABO0kUAA0F
+        target:
+          entity_id: "{{ remote }}"
+
+  ir_effect_sequence:
+    alias: Sequence effect
+    icon: mdi:alarm-light-outline
+    sequence:
+      - service: remote.send_command
+        data:
+          command: b64:JgBYAAABN5MVERURFRAWEBYQFhAWEBYQFTUWNBY0FjUVNRU1FTUWNBU2FDYUNhQSFBIUERURFREVERURFBIUNhQ2FDYUNhU1FQAFGQABNEkUAAw/AAE0SRYADQU=
+        target:
+          entity_id: "{{ remote }}"
+
+  ir_effect_glow:
+    alias: Glow effect
+    icon: mdi:alarm-light-outline
+    sequence:
+      - service: remote.send_command
+        data:
+          command: b64:JgBQAAABNJMVERQSFBIUERURFBIUEhQRFTYUNhQ2FDYUNhQ2EzcUNhQ2FBEUEhQ2FBIUEhQRFREUEhQ2FDYUEhQ2FDYUNhM3FAAFGgABM0gUAA0F
+        target:
+          entity_id: "{{ remote }}"
+
+  ir_effect_fade:
+    alias: Fade effect
+    icon: mdi:alarm-light-outline
+    sequence:
+      - service: remote.send_command
+        data:
+          command: b64:JgBQAAABMpMUEhQRFREUEhQRFREUEhQRFTUVNRU1FDYUNhQ2FDYUNhQ2FRAWNBY0FBIVERUQFhAVERU1FRAVERM3EzcVNRM3EwAFGAABMEkUAA0F
+        target:
+          entity_id: "remote.{{ remote }}"
+
+  ir_effect_flash:
+    alias: Flash effect
+    icon: mdi:alarm-light-outline
+    sequence:
+      - service: remote.send_command
+        data:
+          command: b64:JgBQAAABMZMUERURFBIUERURFBIUERURFDYUNhQ2FDYUNhQ2FDUVNRURFBIUNhM2FBIUEhQRFBIUNhQ2FBEUEhQ2FDYUNhQ2FAAFGQABMUkVAA0F
+        target:
+          entity_id: "{{ remote }}"
+
+  ir_effect_twinkle:
+    alias: Twinkle effect
+    icon: mdi:alarm-light-outline
+    sequence:
+      - service: remote.send_command
+        data:
+          command: b64:JgBYAAABMpMUEhQRFREUEhQSFBEUEhQSFDYUNhQ1FTUVNRQ2FDYUNhQSFDYUNRURFDYUEhQRFBIUNhQRFREUNhQSFDUVNRQ2FAAFGgABMkcWAAxKAAEwSRYADQU=
+        target:
+          entity_id: "{{ remote }}"
+
+  ir_effect_steady:
+    alias: Seady effect
+    icon: mdi:alarm-light-outline
+    sequence:
+      - service: remote.send_command
+        data:
+          command: b64:JgBYAAABM5IXDxYQFREVEBYQFREVERUQFjUVNRU1FTUVNBU1FjQWNRURFTUWNBY0FDYWEBY0FhAWNBURFREVERQSFTUVEBY0FgAFEAABNkkVAAw0AAExSRUADQU=
+        target:
+          entity_id: "remote.{{ remote }}"
+
+input_select:
+  bookcase_light_effects:
+    options:
+      - "Combination"
+      - "Wave"
+      - "Sequence"
+      - "Glow"
+      - "Fade"
+      - "Flash"
+      - "Twinkle"
+      - "Steady"
+    name: Bookcase Light Effects
+  bowl_light_effects:
+    options:
+      - "Combination"
+      - "Wave"
+      - "Sequence"
+      - "Glow"
+      - "Fade"
+      - "Flash"
+      - "Twinkle"
+      - "Steady"
+    name: Bowl Light Effects
+
+homeassistant:
+  customize:
+    light.livingroom_bookcase:
+      icon: mdi:string-lights
+    light.masterbedroom_bowl:
+      icon: mdi:string-lights
