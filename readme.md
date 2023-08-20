@@ -51,7 +51,7 @@ I fell into this rabbit hole in an attempt to slim down how many remotes sat on 
 - A double press prepares the setup to listen to a record. 
 - Music streaming support *should* be handled by starting/stopping the LMS stream.
 
-I am still trying to find a nice way to automation source selection. At the moment I pick the source in Apple Home. BD/SACD playback is also handled from Apple Home.
+I am still trying to find a nice way to automate source selection. At the moment I pick the source in Apple Home. BD/SACD playback is also handled from Apple Home.
 
 I use the brilliant [iPeng](http://penguinlovesmusic.de/) on my phone and [Jivelite](github.com/ralph-irving/jivelite) for players with screens.
 
@@ -61,7 +61,7 @@ I'm not a fan (hah!) of connected A/Cs so use a handy project called [SmartIR](g
 I have an IR controlled fan in my bedroom which is controlled by the Broadlink in a Rube Goldberg of YAML.
 
 ### Dashboard
-I'm  working on a System 7 themed ESP32 ePaper display to display important information at a glance. At present my main interface with my automation routines is via ZHA remotes or via Apple Home.
+I'm working on a System 7 themed ESP32 ePaper display to display important information at a glance. At present my main interface with my automation routines is via ZHA remotes or via Apple Home.
 
 ### Voice Control
 This is an ongoing effort, but I use a [Grandstream HT801](https://www.grandstream.com/products/gateways-and-atas/analog-telephone-adaptors/product/ht801) to make an old Telecom Australia 800 series rotary phone talk to Home Assistant. My dream would be a [Telecom Gold Phone](youtube.com/watch?v=we5zxv5c00g) and tie into the coin circuitry for further automations. I use the built in Whisper and Piper voice pipelines.
