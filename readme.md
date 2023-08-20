@@ -64,7 +64,7 @@ I have an IR controlled fan in my bedroom which is controlled by the Broadlink i
 I'm working on a System 7 themed ESP32 ePaper display to display important information at a glance. At present my main interface with my automation routines is via ZHA remotes or via Apple Home.
 
 ### Voice Control
-This is an ongoing effort, but I use a [Grandstream HT801](https://www.grandstream.com/products/gateways-and-atas/analog-telephone-adaptors/product/ht801) to make an old Telecom Australia 800 series rotary phone talk to Home Assistant. My dream would be a [Telecom Gold Phone](youtube.com/watch?v=we5zxv5c00g) and tie into the coin circuitry for further automations. I use the built in Whisper and Piper voice pipelines.
+This is an ongoing effort, but I use a [Grandstream HT801](https://www.grandstream.com/products/gateways-and-atas/analog-telephone-adaptors/product/ht801) to make an old Telecom Australia 800 series rotary phone talk to Home Assistant. My dream would be a [Telecom Gold Phone](https://youtube.com/watch?v=we5zxv5c00g) and tie into the coin circuitry for further automations. I use the built in Whisper and Piper voice pipelines.
 
 ### ZHA
 Z-wave products are super expensive down under and I'm not entirely sure why. I use a [ConBee II](https://phoscon.de/en/conbee2) dongle to bring Zigbee devices into my Home Assistant install. If, like me, you use KVM for virtualisation. You'll need to [pass through the serial device](community.home-assistant.io/t/conbee-ii-and-kvm/333560).
