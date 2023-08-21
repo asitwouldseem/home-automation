@@ -56,7 +56,7 @@ I am trying to find a nice way to automate source selection. At the moment I pic
 I use the brilliant [iPeng](http://penguinlovesmusic.de/) on my phone and [Jivelite](https://github.com/ralph-irving/jivelite) for players with screens.
 
 ### Climate
-I'm not a fan of connected A/Cs so use a handy project called [SmartIR]https://(github.com/smarthomehub/smartir) to do all the heavy lifting. I think it's a dead project, but it's still working so I'll keep using it until it breaks! I also use it for my Cambridge amp and Sony BD transport.
+I'm not a fan of connected A/Cs so use a handy project called [SmartIR](https://github.com/smarthomehub/smartir) to do all the heavy lifting. I think it's a dead project, but it's still working so I'll keep using it until it breaks! I also use it for my Cambridge amp and Sony BD transport.
 
 I have an IR controlled fan in my bedroom which is controlled by the Broadlink in a Rube Goldberg of YAML.
 

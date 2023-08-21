@@ -22,6 +22,7 @@ recorder:
       - light.adaptive_lighting
       - light.timer_lights
       - switch.livingroom_hifi_fan
+      - switch.masterbedroom_fan
     entity_globs:
       - automation.*
       - weather.*

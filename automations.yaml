@@ -327,7 +327,10 @@
       hours: 0
       minutes: 0
       seconds: 10
-  condition: []
+  condition:
+  - condition: state
+    entity_id: sensor.cameron_status
+    state: Home
   action:
   - service: fan.turn_on
     data:
@@ -866,10 +869,13 @@
   - condition: state
     entity_id: input_boolean.guest_mode
     state: 'off'
-  - condition: state
+  - condition: numeric_state
     entity_id: vacuum.roaming_rosie
     attribute: tank_level
-    state: '100'
+    above: 50
+  - condition: numeric_state
+    entity_id: sensor.roaming_rosie_battery
+    above: 50
   action:
   - service: vacuum.start
     data: {}
@@ -885,7 +891,10 @@
     entity_id:
     - sensor.cameron_status
     to: Away
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
   action:
   - service: light.turn_off
     data: {}
@@ -897,13 +906,10 @@
   - service: fan.turn_off
     data: {}
     target:
-      entity_id: fan.guestbedroom_purifier
-  - service: media_player.turn_off
-    data: {}
-    target:
       area_id:
       - living_room
       - bedroom
+      - guest_bedroom
   mode: single
 - id: '1692157350529'
   alias: 'Presence: Turn off AC if Cameron away for more than 30 minutes'
@@ -917,12 +923,21 @@
       hours: 0
       minutes: 30
       seconds: 0
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
   action:
-  - service: climate.turn_off
-    data: {}
-    target:
+  - if:
+    - condition: state
       entity_id: climate.livingroom_ac
+      state: 'off'
+    then: []
+    else:
+    - service: climate.turn_off
+      data: {}
+      target:
+        entity_id: climate.livingroom_ac
   mode: single
 - id: '1692413131607'
   alias: 'Air Purifier: Switch to gentle if left in auto mode for an hour'
