@@ -19,6 +19,8 @@ sensor:
       hours: 24
 
 template:
+  # Indoor AQI
+  # blog.horner.tj/indoor-aqi-home-assistant/
   - sensor:
       - name: "Indoor AQI"
         unique_id: indoor_aqi
