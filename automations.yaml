@@ -182,6 +182,7 @@
     entity_id:
     - media_player.masterbedroom
     to: playing
+    from: standby
   condition: []
   action:
   - if:
@@ -203,13 +204,6 @@
       source: Stereo 1
     target:
       entity_id: media_player.masterbedroom_speakers
-  - repeat:
-      count: '5'
-      sequence:
-      - service: media_player.volume_down
-        data: {}
-        target:
-          entity_id: media_player.masterbedroom_speakers
   mode: single
 - id: '1687093556943'
   alias: 'Squeezebox: Turn off Master Bedroom speakers when stream ends'

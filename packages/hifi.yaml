@@ -100,7 +100,7 @@ homekit:
 
   - name: Master Bedroom Speakers
     mode: accessory
-    port: 21068
+    port: 21067
     filter:
       include_entities:
         - media_player.masterbedroom_speakers
