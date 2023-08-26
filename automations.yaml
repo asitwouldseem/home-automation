@@ -954,3 +954,20 @@
     target:
       entity_id: fan.guestbedroom_purifier
   mode: single
+- id: '1693008176552'
+  alias: 'Notify: Send Telegram message when mop water needs topping up'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - vacuum.roaming_rosie
+    attribute: tank_level
+    to: '0'
+  condition: []
+  action:
+  - service: telegram_bot.send_message
+    data:
+      title: '*Refill robot mop*'
+      message: 'Reminder: Drench the robot mop. Just one small, soggy task in an unfeeling
+        universe.'
+  mode: single

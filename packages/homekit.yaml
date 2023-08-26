@@ -18,7 +18,7 @@ homekit:
         - fan.guestbedroom_purifier
         - fan.livingroom_hifi_fan
       exclude_entities:
-        - switch.voip_allowcalls
+        - switch.10_0_1_101_allow_calls
         - switch.masterbedroom_fan
         - light.adaptive_lighting
         - light.timer_lights

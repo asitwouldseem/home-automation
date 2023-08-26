@@ -1,23 +1,31 @@
 input_select:
-  picture_frame:
+  dashboard1:
     options:
       - "Artwork 1"
       - "Artwork 2"
       - "Artwork 3"
       - "Dashboard"
-    name: eInk Artwork
+    name: Dashboard Page
 
 media_player:
   - platform: universal
-    name: Picture Frame
-    unique_id: livingroom_eink1
+    name: Living Room Dashboard
+    unique_id: livingroom_dashboard1
     attributes:
-      source: input_select.picture_frame
-      source_list: input_select.picture_frame|options
+      source: input_select.dashboard1
+      source_list: input_select.dashboard1|options
+
+homekit:
+  - name: Living Room Dashboard
+    mode: accessory
+    port: 21068
+    filter:
+      include_entities:
+        - media_player.livingroom_dashboard1
 
 homeassistant:
   customize:
-    media_player.livingroom_eink1:
+    media_player.livingroom_dashboard1:
       device_class: tv
 
 template:
@@ -26,7 +34,7 @@ template:
       minutes: "/1"
     sensor:
       - name: eInk Dashboard Data
-        unique_id: livingroom_eink1_data
+        unique_id: livingroom_dashboard1_data
         state: "OK"
         attributes:
           occupancy: >
