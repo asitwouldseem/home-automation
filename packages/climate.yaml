@@ -16,7 +16,7 @@ sensor:
     state_characteristic: mean
     sampling_size: 15000
     max_age:
-      hours: 24
+      hours: 8
 
 template:
   # Indoor AQI
