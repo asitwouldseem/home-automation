@@ -104,8 +104,11 @@ sensor:
 
   - platform: homeassistant
     entity_id: sensor.dashboard1_data
-    attribute: beenleigh_train
-    id: beenleigh_train
+    attribute: bin_day
+    id: bin_day
+    on_value:
+      then:
+        - lambda: 'id(data_updated) = true;'
 
   - platform: homeassistant
     entity_id: sensor.dashboard1_data
