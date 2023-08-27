@@ -3,4 +3,13 @@
 # You can modify this file to suit your needs.
 /.esphome/
 /secrets.yaml
+
+# Copyrighted work
+# From what I can see, it looks like this TTF is 'inspired' by vintage Mac OS as original Mac type was bitmap. 
+# I'm playing it safe and ignoring it from the repo. Please respect and pay your artists and designers for their work!
+# 
+# I will spare you the copyright rant here.
+#
 /fonts/mac-regular.ttf
+/img/art1.bmp
+/img/art2.bmp

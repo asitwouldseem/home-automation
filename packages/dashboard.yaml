@@ -1,19 +1,27 @@
-input_select:
-  dashboard1:
-    options:
-      - "Artwork 1"
-      - "Artwork 2"
-      - "Artwork 3"
-      - "Dashboard"
-    name: Dashboard Page
-
 media_player:
   - platform: universal
     name: Living Room Dashboard
     unique_id: livingroom_dashboard1
+    device_class: tv
+    commands:
+      turn_on:
+        service: switch.turn_on
+        target:
+          entity_id: switch.livingroom_dashboard1_power
+      turn_off:
+        service: switch.turn_off
+        target:
+          entity_id: switch.livingroom_dashboard1_power
+      select_source:
+        service: select.select_option
+        target:
+          entity_id: select.livingroom_dashboard1_page
+        data:
+          option: "{{ source }}"
     attributes:
-      source: input_select.dashboard1
-      source_list: input_select.dashboard1|options
+      state: switch.livingroom_dashboard1_power
+      source: select.livingroom_dashboard1_page
+      source_list: select.livingroom_dashboard1_page|options
 
 homekit:
   - name: Living Room Dashboard
@@ -22,11 +30,6 @@ homekit:
     filter:
       include_entities:
         - media_player.livingroom_dashboard1
-
-homeassistant:
-  customize:
-    media_player.livingroom_dashboard1:
-      device_class: tv
 
 template:
   - trigger:

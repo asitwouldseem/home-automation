@@ -16,13 +16,17 @@ recorder:
   purge_keep_days: 14
   exclude:
     entities:
-      - sensor.watchman_last_updated
       - sensor.brisbane_city_train
       - sensor.beenleigh_train
+
+      # Helper entities
+      - sensor.watchman_last_updated
       - light.adaptive_lighting
       - light.timer_lights
       - switch.livingroom_hifi_fan
       - switch.masterbedroom_fan
+      - select.livingroom_dashboard1_page
+      - switch.livingroom_dashboard1_power
     entity_globs:
       - automation.*
       - weather.*
