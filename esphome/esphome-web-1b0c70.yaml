@@ -5,7 +5,7 @@ esphome:
     priority: 200.0
     then:
       - delay: 5s
-      - script.execute: update_screen
+      - switch.turn_on: dashboard_on
 
 esp32:
   board: esp32dev
