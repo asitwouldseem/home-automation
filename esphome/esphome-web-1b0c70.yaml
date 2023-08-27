@@ -27,8 +27,6 @@ spi:
   clk_pin: 13
   mosi_pin: 14
 
-# Using these two as examples, replace as neccesary.
-# Respect and pay your artists and designers!
 select:
   - platform: template
     name: Dashboard Page
@@ -46,6 +44,10 @@ select:
 # Borrowed from @Madelena's Weatherman
 # github.com/Madelena/esphome-weatherman-dashboard/blob/main/weatherman.yaml
 globals:
+  - id: data_updated
+    type: bool
+    restore_value: no
+    initial_value: 'false'
   - id: recorded_display_refresh
     type: int
     restore_value: yes
@@ -81,13 +83,34 @@ sensor:
   # Send Home Assistant data to ESP32
   - platform: homeassistant
     entity_id: sensor.dashboard1_data
+    attribute: occupancy
+    id: occupancy
+
+  - platform: homeassistant
+    entity_id: sensor.dashboard1_data
     attribute: weather_condition_now
     id: weather_condition_now
+    on_value:
+      then:
+        - lambda: 'id(data_updated) = true;'
 
   - platform: homeassistant
     entity_id: sensor.dashboard1_data
     attribute: weather_temperature_now
     id: weather_temperature_now
+    on_value:
+      then:
+        - lambda: 'id(data_updated) = true;'
+
+  - platform: homeassistant
+    entity_id: sensor.dashboard1_data
+    attribute: beenleigh_train
+    id: beenleigh_train
+
+  - platform: homeassistant
+    entity_id: sensor.dashboard1_data
+    attribute: city_train
+    id: city_train
 
   # Diagnostic data
   - platform: template
@@ -100,7 +123,7 @@ sensor:
 font:
   - file: "fonts/mac-regular.ttf"
     id: mac_regular
-    size: 20
+    size: 42
 
 image:
   - file: "img/art1.bmp"
@@ -127,7 +150,7 @@ display:
          it.image(0, 10, id(img_art2));
       - id: dashboard
         lambda: |-
-          it.print(15, 25, id(mac_regular), "This is dashboard!");     
+         it.printf(60, 250, id(mac_regular), "%.0f°C", id(weather_temperature_now).state);
 
 wifi:
   ssid: !secret wifi_ssid

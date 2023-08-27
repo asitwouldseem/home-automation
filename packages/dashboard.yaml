@@ -51,3 +51,7 @@ template:
             {% endif %}
           weather_temperature_now: >
             {{ state_attr('weather.brisbane_hourly', 'forecast')[0].temperature | round }}
+          beenleigh_train: >
+            {{ states('sensor.beenleigh_train') }}
+          city_train: >
+            {{ states('sensor.brisbane_city_train') }}
