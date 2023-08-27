@@ -79,7 +79,7 @@ I use a [Grandstream HT801](https://www.grandstream.com/products/gateways-and-at
 Z-wave products are super expensive down under and I'm not entirely sure why. I use a [ConBee II](https://phoscon.de/en/conbee2) dongle to bring Zigbee devices into my Home Assistant install. If, like me, you use KVM for virtualisation. You'll need to [pass through the serial device](https://community.home-assistant.io/t/conbee-ii-and-kvm/333560).
 
 Current Zigbee devices:
-- 3x Aqara water leak sensors
+- 4x Aqara water leak sensors
 - 2x Aqara remotes
 - 3x IKEA TRÅDFRI lamps (E14/E27)
 - 1x IKEA TRÅDFRI remote control
