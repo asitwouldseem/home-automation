@@ -21,6 +21,8 @@ recorder:
 
       # Helper entities
       - binary_sensor.livingroom_dashboard1_motion
+      - binary_sensor.ubpx700_ping
+      - binary_sensor.dashboard1_ping
       - sensor.watchman_last_updated
       - light.adaptive_lighting
       - light.timer_lights

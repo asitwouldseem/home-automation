@@ -64,3 +64,9 @@ template:
             {{ states('sensor.brisbane_bin_day') }}
           city_train: >
             {{ states('sensor.brisbane_city_train') }}
+
+binary_sensor:
+  - platform: ping
+    name: dashboard1_ping
+    host: !secret dashboard1_ping
+    scan_interval: 3600

@@ -479,46 +479,6 @@
     target:
       entity_id: media_player.masterbedroom_speakers
   mode: single
-- id: '1687594421702'
-  alias: 'Notify: Regular bin day'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.brisbane_bin_day
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: person.cameron_m
-    state: home
-  action:
-  - service: telegram_bot.send_message
-    data:
-      message: I suppose I could remind you to take the bins out, though I can't guarantee
-        it'll make any difference. The futility of such a mundane task is staggering,
-        really.
-      title: '*Bin day*'
-  mode: single
-- id: '1687594486013'
-  alias: 'Notify: Recycling bin day'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.brisbane_bin_day_recycle
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: person.cameron_m
-    state: home
-  action:
-  - service: telegram_bot.send_message
-    data:
-      message: Recycling, ah yes, the noble pursuit of repurposing refuse in a feeble
-        attempt to appease the conscience of sentient beings. Perhaps in this act
-        of misguided optimism, you may find solace in the illusion of making a difference.
-      title: '*Recycling bin day*'
-  mode: single
 - id: '1687595275760'
   alias: 'Notify: Send Telegram message if water leak detected'
   description: ''
@@ -970,4 +930,22 @@
       title: '*Refill robot mop*'
       message: 'Reminder: Drench the robot mop. Just one small, soggy task in an unfeeling
         universe.'
+  mode: single
+- id: '1693137322240'
+  alias: 'Notify: Send Telegram message when dashboard goes offline'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.dashboard1_ping
+    to: 'off'
+    from: 'on'
+  condition: []
+  action:
+  - service: telegram_bot.send_message
+    data:
+      message: The dashboard battery, in its unsurprising predictability, has finally
+        embraced its own demise. Just another cosmic hiccup in this never-ending series
+        of disappointments.
+      title: '*Dashboard battery requires charging*'
   mode: single
