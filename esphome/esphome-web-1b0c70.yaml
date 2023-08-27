@@ -67,6 +67,38 @@ script:
       - component.update: eink_display
       - lambda: 'id(recorded_display_refresh) += 1;'
 
+  # Originally from Weatherman, check only on Dashboard page.
+  - id: refresh_data
+    then:
+      - if:
+          condition:
+            lambda: 'return id(data_updated) == true;'
+          then:
+            - if:
+                condition:
+                  binary_sensor.is_on: motion_detected
+                then:
+                  - logger.log: "Refreshing display..."
+                  - script.execute: update_screen
+                else:
+                  - logger.log: "No motion detected."
+          else:
+            - logger.log: "No sensors updated."
+
+# Check whether the display needs to be refreshed every minute, based on whether new data is received or motion is detected.
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+    on_time:
+      - seconds: 0
+        minutes: /1
+        then:
+          - if:
+              condition:
+                display.is_displaying_page: dashboard
+              then:
+                - script.execute: refresh_data
+
 # We're going to use this as a pseudo on/off as ePaper displays don't use any energy when not writing to the display.
 switch:
   - platform: template
@@ -77,17 +109,18 @@ switch:
     turn_on_action:
       - script.execute: update_screen
     turn_off_action:
-      - logger.log: "Display Off!"
+      - select.first: page
+      - script.execute: update_screen
 
+binary_sensor:
+  - platform: homeassistant
+    entity_id: binary_sensor.livingroom_dashboard1_motion
+    id: motion_detected
+
+# Send Home Assistant data to ESP32
 sensor:
-  # Send Home Assistant data to ESP32
   - platform: homeassistant
-    entity_id: sensor.dashboard1_data
-    attribute: occupancy
-    id: occupancy
-
-  - platform: homeassistant
-    entity_id: sensor.dashboard1_data
+    entity_id: sensor.livingroom_dashboard1_data
     attribute: weather_condition_now
     id: weather_condition_now
     on_value:
@@ -95,7 +128,7 @@ sensor:
         - lambda: 'id(data_updated) = true;'
 
   - platform: homeassistant
-    entity_id: sensor.dashboard1_data
+    entity_id: sensor.livingroom_dashboard1_data
     attribute: weather_temperature_now
     id: weather_temperature_now
     on_value:
@@ -103,7 +136,7 @@ sensor:
         - lambda: 'id(data_updated) = true;'
 
   - platform: homeassistant
-    entity_id: sensor.dashboard1_data
+    entity_id: sensor.livingroom_dashboard1_data
     attribute: bin_day
     id: bin_day
     on_value:
@@ -111,7 +144,7 @@ sensor:
         - lambda: 'id(data_updated) = true;'
 
   - platform: homeassistant
-    entity_id: sensor.dashboard1_data
+    entity_id: sensor.livingroom_dashboard1_data
     attribute: city_train
     id: city_train
 

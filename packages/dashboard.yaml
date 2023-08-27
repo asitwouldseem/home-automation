@@ -35,13 +35,22 @@ template:
   - trigger:
       platform: time_pattern
       minutes: "/1"
+  - binary_sensor:
+      - name: Dashboard Motion Detected
+        unique_id: livingroom_dashboard1_motion
+        device_class: "occupancy"
+        delay_off: 1min
+        state: >-
+          {%- if states('binary_sensor.livingroom_motionsensor_occupancy') == 'on' and states('sensor.cameron_status') == 'Home' %}
+            on
+          {%- else -%}
+            off
+          {%- endif -%}
     sensor:
-      - name: eInk Dashboard Data
+      - name: Dashboard Data
         unique_id: livingroom_dashboard1_data
         state: "OK"
         attributes:
-          occupancy: >
-            {{ states('binary_sensor.livingroom_motionsensor_occupancy') }}
           weather_condition_now: >
             {% set cond_now = states('weather.brisbane_hourly') %}
             {% if states('sun.sun') == 'below_horizon' %}

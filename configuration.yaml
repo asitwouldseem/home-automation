@@ -20,6 +20,7 @@ recorder:
       - sensor.beenleigh_train
 
       # Helper entities
+      - binary_sensor.livingroom_dashboard1_motion
       - sensor.watchman_last_updated
       - light.adaptive_lighting
       - light.timer_lights
