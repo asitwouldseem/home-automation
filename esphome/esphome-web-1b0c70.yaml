@@ -91,7 +91,7 @@ time:
     id: homeassistant_time
     on_time:
       - seconds: 0
-        minutes: /1
+        minutes: /30
         then:
           - if:
               condition:

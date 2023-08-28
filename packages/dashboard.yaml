@@ -19,7 +19,7 @@ media_player:
         data:
           option: "{{ source }}"
     attributes:
-      state: switch.livingroom_dashboard1_power
+      state: binary_sensor.dashboard1_ping
       source: select.livingroom_dashboard1_page
       source_list: select.livingroom_dashboard1_page|options
 
