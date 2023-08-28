@@ -62,8 +62,6 @@ template:
             {{ state_attr('weather.brisbane_hourly', 'forecast')[0].temperature | round }}
           bin_day: >
             {{ states('sensor.brisbane_bin_day') }}
-          city_train: >
-            {{ states('sensor.brisbane_city_train') }}
 
 binary_sensor:
   - platform: ping
