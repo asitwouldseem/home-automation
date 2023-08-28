@@ -68,3 +68,24 @@ binary_sensor:
     name: dashboard1_ping
     host: !secret dashboard1_ping
     scan_interval: 3600
+
+automation:
+  - id: "1693137322240"
+    alias: "Notify: Send Telegram message when dashboard goes offline"
+    description: ""
+    trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.dashboard1_ping
+        to: "off"
+        from: "on"
+    condition: []
+    action:
+      - service: telegram_bot.send_message
+        data:
+          message:
+            The dashboard battery, in its unsurprising predictability, has finally
+            embraced its own demise. Just another cosmic hiccup in this never-ending series
+            of disappointments.
+          title: "*Dashboard battery requires charging*"
+    mode: single
