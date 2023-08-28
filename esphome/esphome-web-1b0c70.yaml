@@ -85,7 +85,7 @@ script:
           else:
             - logger.log: "No sensors updated."
 
-# Check whether the display needs to be refreshed every minute, based on whether new data is received or motion is detected.
+# Check whether the display needs to be refreshed every 30 minutes, based on whether new data is received or motion is detected.
 time:
   - platform: homeassistant
     id: homeassistant_time
