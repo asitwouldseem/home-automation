@@ -27,7 +27,7 @@ This is more a reference for me, so the documentation isn't perfect. You can fin
 [Logitech Media Server](https://github.com/Logitech/slimserver/) is an interesting project. Originally developed by SlimDevices for a suite of hardware players (that Logitech stopped selling in 2012), the community continues to develop and maintain the server software licensed under GPL. It's a bit rough out of the box, but with some tweaks, it really punches above its weight against the likes of Sonos and Roon.
 
 Plugins:
-- TVHeadEnd (DVB Audio)
+- TVH (DVB Audio)
 - Spotty (Spotify Connect)
 - DSDPlayer (Enable DSD/DXD playback)
 - WaveInput (Stream audio from LMS)
@@ -60,7 +60,7 @@ I'll admit I almost never watch TV at this point, but I had a DVB HAT floating a
 
 ![Raspberry Pi Zero with DVB HAT attached to an aerial port](/docs/img/tv-server.jpg "TV Server")
 
-TVHeadEnd should work fine in Jellyfin as it is, but I couldn't get it to play nicely. I caved and installed a [xTeve](https://github.com/xteve-project/xteve) proxy to emulate a HDHomeRun for Jellyfin.
+TVHeadEnd should work fine in Jellyfin as it is, but I couldn't get it to play nicely. I caved and installed a [Threadfin](https://github.com/Threadfin/Threadfin) proxy to emulate a HDHomeRun for Jellyfin.
 
 ### Climate
 I'm not a fan of connected A/Cs so use a handy project called [SmartIR](https://github.com/smarthomehub/smartir) to do all the heavy lifting. I think it's a dead project, but it's still working so I'll keep using it until it breaks! I also use it for my Cambridge amp and Sony BD transport.

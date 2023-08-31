@@ -33,19 +33,13 @@ Remember to first chown, then unshare: `podman unshare chown 200:200 -R jellyfin
     docker.io/jellyfin/jellyfin:latest
 ```
 
-## xTeve
+## Threadfin
 ```
 podman run -d
-  --hostname xteve.local
-  --name=xteve
-  --net=host
+  --hostname threadfin.local
+  --name=threadfin
   --restart=unless-stopped
-  --log-opt max-size=10m
-  --log-opt max-file=3
+  -p 34400:34400/tcp
   -e TZ="Australia/Brisbane"
-  -v "/home/cameron/apps/xteve/.xteve":"/root/.xteve":rw
-  -v "/home/cameron/apps/xteve/config":"/config":rw
-  -v "/home/cameron/apps/xteve/tmp":"/tmp/xteve":rw
-  -v "/home/cameron/apps/xteve/data":"/TVH":rw
-docker.io/alturismo/xteve:latest
+docker.io/fyb3roptik/threadfin:latest
 ```
