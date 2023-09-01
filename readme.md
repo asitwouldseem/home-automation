@@ -8,7 +8,7 @@ This is my take on home automation (and homelab, I suppose) based on the followi
 - Logitech Media Server (multi-room audio)
 - Jellyfin (video management)
 - TVHeadEnd (DVB streaming and XMLTV management)
-- xTeve (HDHomeRun emulation for Jellyfin)
+- Tailfin (HDHomeRun emulation for Jellyfin)
 - Pi-hole (DNS server and network-wide ad blocker)
 
 To take advantage of Home Assistant's OS, I run Home Assistant in a VM on a Late 2014 Mac Mini that lives full-time in my HiFi. Where possible, everything else runs in Podman containers on the same Mac Mini. Don't worry fellow nerds, I flashed the Mac with Ubuntu Server to make this easier to manage. 
