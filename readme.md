@@ -8,7 +8,6 @@ This is my take on home automation (and homelab, I suppose) based on the followi
 - Logitech Media Server (multi-room audio)
 - Jellyfin (video management)
 - TVHeadEnd (DVB streaming and XMLTV management)
-- Tailfin (HDHomeRun emulation for Jellyfin)
 - Pi-hole (DNS server and network-wide ad blocker)
 
 To take advantage of Home Assistant's OS, I run Home Assistant in a VM on a Late 2014 Mac Mini that lives full-time in my HiFi. Where possible, everything else runs in Podman containers on the same Mac Mini. Don't worry fellow nerds, I flashed the Mac with Ubuntu Server to make this easier to manage. 
@@ -59,8 +58,6 @@ I use the brilliant [iPeng](http://penguinlovesmusic.de/) on my phone and [Jivel
 I'll admit I almost never watch TV at this point, but I had a DVB HAT floating around from a past project. It gets a bit of use as a way to stream radio channels the apartment, but rarely watching TV. If you've got a TV HAT, best thing you can do (IMO) is replace the connector with a [MCX-PAL cable](https://www.ebay.com.au/sch/i.html?_nkw=MCX+to+PAL). I don't think these HATs are sold in F-type territories, but the PAL cable always felt like it was bending the HAT.
 
 ![Raspberry Pi Zero with DVB HAT attached to an aerial port](/docs/img/tv-server.jpg "TV Server")
-
-TVHeadEnd should work fine in Jellyfin as it is, but I couldn't get it to play nicely. I caved and installed a [Threadfin](https://github.com/Threadfin/Threadfin) proxy to emulate a HDHomeRun for Jellyfin.
 
 ### Climate
 I'm not a fan of connected A/Cs so use a handy project called [SmartIR](https://github.com/smarthomehub/smartir) to do all the heavy lifting. I think it's a dead project, but it's still working so I'll keep using it until it breaks! I also use it for my Cambridge amp and Sony BD transport.

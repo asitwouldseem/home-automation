@@ -32,14 +32,3 @@ Remember to first chown, then unshare: `podman unshare chown 200:200 -R jellyfin
     --mount type=bind,source=/mnt/tv,destination=/tv,ro=true
     docker.io/jellyfin/jellyfin:latest
 ```
-
-## Threadfin
-```
-podman run -d
-  --hostname threadfin.local
-  --name=threadfin
-  --restart=unless-stopped
-  -p 34400:34400/tcp
-  -e TZ="Australia/Brisbane"
-docker.io/fyb3roptik/threadfin:latest
-```
