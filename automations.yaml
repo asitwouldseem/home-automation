@@ -182,7 +182,6 @@
     entity_id:
     - media_player.masterbedroom
     to: playing
-    from: standby
   condition: []
   action:
   - if:

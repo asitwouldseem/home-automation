@@ -80,7 +80,7 @@ Current Zigbee devices:
 - 2x Aqara remotes
 - 3x IKEA TRÅDFRI lamps (E14/E27)
 - 1x IKEA TRÅDFRI remote control
-- 1x Philips Hue Indoor Motion Sensor
+- 2x Philips Hue Indoor Motion Sensor
 - 1x GLEDOPTO RGB-CCT LED strip
 
 I have also exposed a Bluetooth dongle for future expandability, though I don't rate Bluetooth for privacy and reliability.

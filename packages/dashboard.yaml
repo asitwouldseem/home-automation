@@ -89,26 +89,3 @@ automation:
             of disappointments.
           title: "*Dashboard battery requires charging*"
     mode: single
-  - id: "1693224123807"
-    alias: "ESPHome: Change dashboard1 to artwork if Cameron away for 4 hours or longer"
-    description: ""
-    trigger:
-      - platform: state
-        entity_id:
-          - sensor.cameron_status
-        to: Away
-        for:
-          hours: 4
-          minutes: 0
-          seconds: 0
-    condition:
-      - condition: state
-        entity_id: select.livingroom_dashboard1_page
-        state: Dashboard
-    action:
-      - service: select.select_option
-        data:
-          option: Woman with a Hat (1905)
-        target:
-          entity_id: select.livingroom_dashboard1_page
-    mode: single

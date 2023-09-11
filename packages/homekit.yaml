@@ -14,6 +14,7 @@ homekit:
         - sensor.masterbedroom_rm4_humidity
         - sensor.guestbedroom_purifier_pm25
         - binary_sensor.livingroom_motionsensor_occupancy
+        - binary_sensor.masterbedroom_motionsensor_occupancy
         - fan.masterbedroom_fan
         - fan.guestbedroom_purifier
         - fan.livingroom_hifi_fan
@@ -28,6 +29,9 @@ homekit:
 homeassistant:
   customize:
     binary_sensor.livingroom_motionsensor_occupancy:
+      device_class: occupancy
+
+    binary_sensor.masterbedroom_motionsensor_occupancy:
       device_class: occupancy
 
     sensor.guestbedroom_purifier_pm25:
