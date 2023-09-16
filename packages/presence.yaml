@@ -16,14 +16,6 @@ sensor:
       cameron_status:
         value_template: "{{ states.input_select.cameron_status_dropdown.state }}"
         friendly_name: "Cameron"
-  - platform: min_max
-    name: "Occupancy Confidence_ Cameron"
-    unique_id: occupancy_cameron
-    type: max
-    round_digits: 0
-    entity_ids:
-      - sensor.confidence_cameron_livingroom
-      - sensor.confidence_cameron_masterbedroom
 
 mqtt:
   - sensor:
@@ -32,18 +24,12 @@ mqtt:
       value_template: "{{ value_json.confidence }}"
       unit_of_measurement: "%"
       name: "Living Room - Cameron"
-  - sensor:
-      unique_id: confidence_cameron_masterbedroom
-      state_topic: "monitor/masterBedroom/cameron"
-      value_template: "{{ value_json.confidence }}"
-      unit_of_measurement: "%"
-      name: "Master Bedroom - Cameron"
 
 automation:
   - alias: "General: Mark Cameron as recently arrived"
     trigger:
       - platform: numeric_state
-        entity_id: sensor.occupancy_confidence_cameron
+        entity_id: sensor.confidence_cameron_livingroom
         above: 10
     action:
       - service: input_select.select_option
@@ -71,7 +57,7 @@ automation:
   - alias: "General: Mark Cameron as recently left"
     trigger:
       - platform: numeric_state
-        entity_id: sensor.occupancy_confidence_cameron
+        entity_id: sensor.confidence_cameron_livingroom
         below: 10
     action:
       - service: input_select.select_option
