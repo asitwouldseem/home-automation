@@ -5,7 +5,13 @@ esphome:
     priority: 200.0
     then:
       - delay: 5s
-      - switch.turn_on: dashboard_on
+      - if:
+          condition:
+            display.is_displaying_page: dashboard
+          then:
+            - script.execute: refresh_data
+          else:
+            - script.execute: update_screen
 
 esp32:
   board: esp32dev
@@ -26,6 +32,10 @@ ota:
 spi:
   clk_pin: 13
   mosi_pin: 14
+
+deep_sleep:
+  id: sleepy
+  sleep_duration: 15min
 
 select:
   - platform: template
@@ -66,6 +76,18 @@ script:
           }
       - component.update: eink_display
       - lambda: 'id(recorded_display_refresh) += 1;'
+      - script.execute: sleepy_screen
+
+  - id: sleepy_screen
+    then:
+      - delay: 10s
+      - if:
+          condition:
+            binary_sensor.is_on: prevent_sleep
+          then:
+            - logger.log: 'Deep sleep pause requested.'
+          else:
+            - deep_sleep.enter: sleepy
 
   # Originally from Weatherman, check only on Dashboard page.
   - id: refresh_data
@@ -85,20 +107,6 @@ script:
           else:
             - logger.log: "No sensors updated."
 
-# Check whether the display needs to be refreshed every 30 minutes, based on whether new data is received or motion is detected.
-time:
-  - platform: homeassistant
-    id: homeassistant_time
-    on_time:
-      - seconds: 0
-        minutes: /30
-        then:
-          - if:
-              condition:
-                display.is_displaying_page: dashboard
-              then:
-                - script.execute: refresh_data
-
 # We're going to use this as a pseudo on/off as ePaper displays don't use any energy when not writing to the display.
 switch:
   - platform: template
@@ -112,8 +120,8 @@ switch:
       - select.first: page
       - script.execute: update_screen
 
-# Receive Home Assistant data
 binary_sensor:
+  # Receive Home Assistant data
   - platform: homeassistant
     entity_id: binary_sensor.livingroom_dashboard1_motion
     id: motion_detected
@@ -124,6 +132,12 @@ binary_sensor:
     on_state:
       then:
         - lambda: 'id(data_updated) = true;'
+
+  # Will only pick up a value if this device is configured in Home Assistant > Integrations
+  # tatham.blog/2021/02/06/esphome-batteries-deep-sleep-and-over-the-air-updates/
+  - platform: homeassistant
+    id: prevent_sleep
+    entity_id: input_boolean.livingroom_dashboard1_sleep
 
 text_sensor:
   - platform: homeassistant

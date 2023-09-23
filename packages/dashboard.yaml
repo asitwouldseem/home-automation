@@ -63,11 +63,19 @@ template:
           bin_day: >
             {{ states('sensor.brisbane_bin_day') }}
 
+# A simple way to check whether the battery needs charging. See: automation block below.
 binary_sensor:
   - platform: ping
     name: dashboard1_ping
     host: !secret dashboard1_ping
     scan_interval: 3600
+
+# Control whether display sleeps
+# tatham.blog/2021/02/06/esphome-batteries-deep-sleep-and-over-the-air-updates/
+input_boolean:
+  livingroom_dashboard1_sleep:
+    name: Prevent Deep Sleep
+    icon: mdi:sleep-off
 
 automation:
   - id: "1693137322240"
