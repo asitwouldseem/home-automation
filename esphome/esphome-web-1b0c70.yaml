@@ -11,7 +11,7 @@ esphome:
           then:
             - script.execute: refresh_data
           else:
-            - script.execute: update_screen
+            - script.execute: sleepy_screen
 
 esp32:
   board: esp32dev
