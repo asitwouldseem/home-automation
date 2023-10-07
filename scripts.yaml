@@ -28,7 +28,7 @@ tv_start:
     alias: Turn on Cambridge AXR85
   - delay:
       hours: 0
-      minutes: 15
+      minutes: 10
       seconds: 0
       milliseconds: 0
   - service: media_player.turn_on

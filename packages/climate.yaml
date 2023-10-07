@@ -2,13 +2,6 @@
 smartir:
 
 sensor:
-  # Air Quality
-  # home-assistant.io/integrations/waqi/
-  - platform: waqi
-    token: !secret waqi_api
-    locations:
-      - !secret waqi_site
-
   - platform: statistics
     unique_id: pm25_24hr_avg
     name: "Indoor PM2.5 Average"

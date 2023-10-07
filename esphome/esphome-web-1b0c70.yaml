@@ -35,7 +35,7 @@ spi:
 
 deep_sleep:
   id: sleepy
-  sleep_duration: 15min
+  sleep_duration: 5min
 
 select:
   - platform: template
