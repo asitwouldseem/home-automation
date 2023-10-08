@@ -70,13 +70,6 @@ binary_sensor:
     host: !secret dashboard1_ping
     scan_interval: 3600
 
-# Control whether display sleeps
-# tatham.blog/2021/02/06/esphome-batteries-deep-sleep-and-over-the-air-updates/
-input_boolean:
-  livingroom_dashboard1_sleep:
-    name: Prevent Deep Sleep
-    icon: mdi:sleep-off
-
 automation:
   - id: "1693137322240"
     alias: "Notify: Send Telegram message when dashboard goes offline"

@@ -5,13 +5,7 @@ esphome:
     priority: 200.0
     then:
       - delay: 5s
-      - if:
-          condition:
-            display.is_displaying_page: dashboard
-          then:
-            - script.execute: refresh_data
-          else:
-            - script.execute: sleepy_screen
+      - switch.turn_on: dashboard_on
 
 esp32:
   board: esp32dev
@@ -33,10 +27,6 @@ spi:
   clk_pin: 13
   mosi_pin: 14
 
-deep_sleep:
-  id: sleepy
-  sleep_duration: 10min
-
 select:
   - platform: template
     name: Dashboard Page
@@ -50,6 +40,21 @@ select:
     on_value:
       then:
         - script.execute: update_screen
+
+# Check whether the display needs to be refreshed every 30 minutes, based on whether new data is received or motion is detected.
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+    on_time:
+      - seconds: 0
+        minutes: 0
+        hours: 1
+        then:
+          - if:
+              condition:
+                display.is_displaying_page: dashboard
+              then:
+                - script.execute: refresh_data
 
 # Borrowed from @Madelena's Weatherman
 # github.com/Madelena/esphome-weatherman-dashboard/blob/main/weatherman.yaml
@@ -76,18 +81,6 @@ script:
           }
       - component.update: eink_display
       - lambda: 'id(recorded_display_refresh) += 1;'
-      - script.execute: sleepy_screen
-
-  - id: sleepy_screen
-    then:
-      - delay: 10s
-      - if:
-          condition:
-            binary_sensor.is_on: prevent_sleep
-          then:
-            - logger.log: 'Deep sleep pause requested.'
-          else:
-            - deep_sleep.enter: sleepy
 
   # Originally from Weatherman, check only on Dashboard page.
   - id: refresh_data
@@ -115,6 +108,7 @@ switch:
     optimistic: true
     restore_mode: RESTORE_DEFAULT_ON
     turn_on_action:
+      - select.first: page
       - script.execute: update_screen
     turn_off_action:
       - select.first: page
@@ -132,12 +126,6 @@ binary_sensor:
     on_state:
       then:
         - lambda: 'id(data_updated) = true;'
-
-  # Will only pick up a value if this device is configured in Home Assistant > Integrations
-  # tatham.blog/2021/02/06/esphome-batteries-deep-sleep-and-over-the-air-updates/
-  - platform: homeassistant
-    id: prevent_sleep
-    entity_id: input_boolean.livingroom_dashboard1_sleep
 
 text_sensor:
   - platform: homeassistant
