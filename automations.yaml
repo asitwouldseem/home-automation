@@ -948,3 +948,61 @@
     target:
       entity_id: vacuum.roaming_rosie
   mode: single
+- id: '1696749406796'
+  alias: 'Media Player: Update friendly source when source changed manually'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.livingroom_hifi_x80j
+    attribute: media_title
+    to: HDMI 1
+    id: hdmi1
+  - platform: state
+    entity_id:
+    - media_player.livingroom_hifi_x80j
+    attribute: media_title
+    to: HDMI 2
+    id: hdmi2
+  - platform: state
+    entity_id:
+    - media_player.livingroom_hifi_x80j
+    attribute: media_title
+    to: HDMI 3 (eARC/ARC)
+    id: hdmi3
+  condition: []
+  action:
+  - alias: HDMI 1
+    if:
+    - condition: trigger
+      id:
+      - hdmi1
+    then:
+    - service: input_select.select_option
+      data:
+        option: Bluray
+      target:
+        entity_id: input_select.tv_source_list
+  - alias: HDMI 2
+    if:
+    - condition: trigger
+      id:
+      - hdmi2
+    then:
+    - service: input_select.select_option
+      data:
+        option: HTPC
+      target:
+        entity_id: input_select.tv_source_list
+  - alias: HDMI 3
+    if:
+    - condition: trigger
+      id:
+      - hdmi3
+    then:
+    - service: input_select.select_option
+      data:
+        option: Apple TV
+      target:
+        entity_id: input_select.tv_source_list
+  mode: single
