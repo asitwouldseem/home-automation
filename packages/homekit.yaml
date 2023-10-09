@@ -38,8 +38,8 @@ homeassistant:
       device_class: occupancy
 
     sensor.guestbedroom_purifier_pm25:
-      icon: pap:pm25
       device_class: pm25
+      icon: pap:pm25
 
     media_player.livingroom_hifi_axr85:
       device_class: receiver
