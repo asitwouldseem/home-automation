@@ -13,6 +13,7 @@ homekit:
         - sensor.livingroom_rm4_humidity
         - sensor.masterbedroom_rm4_humidity
         - sensor.guestbedroom_purifier_pm25
+        - input_boolean.guest_mode
         - binary_sensor.livingroom_motionsensor_occupancy
         - binary_sensor.masterbedroom_motionsensor_occupancy
         - fan.masterbedroom_fan
