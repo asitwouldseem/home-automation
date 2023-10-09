@@ -1048,3 +1048,41 @@
         entity_id: media_player.livingroom_hifi_axr85
     alias: Unmute amp
   mode: single
+- id: '1696895062815'
+  alias: 'Air Purifier: Enter sleep mode at night'
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.bedtime_start
+    id: start
+  - platform: time
+    at: input_datetime.bedtime_end
+    id: end
+  condition:
+  - condition: state
+    entity_id: fan.guestbedroom_purifier
+    state: 'on'
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - start
+    then:
+    - service: fan.set_preset_mode
+      data:
+        preset_mode: sleep
+      target:
+        entity_id: fan.guestbedroom_purifier
+    alias: Enter sleep mode
+  - alias: Exit sleep mode
+    if:
+    - condition: trigger
+      id:
+      - end
+    then:
+    - service: fan.set_preset_mode
+      data:
+        preset_mode: gentle
+      target:
+        entity_id: fan.guestbedroom_purifier
+  mode: single
