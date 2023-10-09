@@ -18,6 +18,9 @@ homekit:
         - fan.masterbedroom_fan
         - fan.guestbedroom_purifier
         - fan.livingroom_hifi_fan
+        - media_player.masterbedroom_speakers
+        - media_player.livingroom_hifi_axr85
+        - media_player.livingroom_hifi_ubpx700
       exclude_entities:
         - switch.10_0_1_101_allow_calls
         - switch.masterbedroom_fan
@@ -37,3 +40,12 @@ homeassistant:
     sensor.guestbedroom_purifier_pm25:
       icon: pap:pm25
       device_class: pm25
+
+    media_player.livingroom_hifi_axr85:
+      device_class: receiver
+
+    media_player.masterbedroom_speakers:
+      device_class: receiver
+
+    media_player.livingroom_hifi_ubpx700:
+      device_class: receiver

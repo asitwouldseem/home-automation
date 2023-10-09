@@ -26,7 +26,7 @@ media_player:
 homekit:
   - name: Living Room Dashboard
     mode: accessory
-    port: 21068
+    port: 21067
     filter:
       include_entities:
         - media_player.livingroom_dashboard1

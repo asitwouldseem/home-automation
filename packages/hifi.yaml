@@ -72,38 +72,13 @@ media_player:
       source: input_select.tv_source_list
       source_list: input_select.tv_source_list|options
 
-homeassistant:
-  customize:
-    media_player.livingroom_hifi_axr85:
-      device_class: tv
-
-    media_player.masterbedroom_speakers:
-      device_class: tv
-
-    media_player.livingroom_hifi_ubpx700:
-      device_class: receiver
-
 homekit:
-  - name: Cambridge AXR85
-    mode: accessory
-    port: 21065
-    filter:
-      include_entities:
-        - media_player.livingroom_hifi_axr85
-
   - name: Living Room TV
     mode: accessory
     port: 21066
     filter:
       include_entities:
         - media_player.livingroom_hifi_tv
-
-  - name: Master Bedroom Speakers
-    mode: accessory
-    port: 21067
-    filter:
-      include_entities:
-        - media_player.masterbedroom_speakers
 
     media_player.livingroom_hifi_axr85:
       name: "Cambridge AXR85"
