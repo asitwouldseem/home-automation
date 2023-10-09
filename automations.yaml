@@ -1006,3 +1006,45 @@
       target:
         entity_id: input_select.tv_source_list
   mode: single
+- id: '1696854451863'
+  alias: 'SIP: Mute amp when call in progress'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.10_0_1_101_call_in_progress
+    to: 'on'
+    id: 'on'
+  - platform: state
+    entity_id:
+    - binary_sensor.10_0_1_101_call_in_progress
+    to: 'off'
+    id: 'off'
+  condition:
+  - condition: state
+    entity_id: media_player.livingroom_hifi_axr85
+    state: 'on'
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - 'on'
+    then:
+    - service: media_player.volume_mute
+      data:
+        is_volume_muted: true
+      target:
+        entity_id: media_player.livingroom_hifi_axr85
+    alias: Mute amp
+  - if:
+    - condition: trigger
+      id:
+      - 'off'
+    then:
+    - service: media_player.volume_mute
+      data:
+        is_volume_muted: false
+      target:
+        entity_id: media_player.livingroom_hifi_axr85
+    alias: Unmute amp
+  mode: single
