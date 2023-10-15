@@ -1070,3 +1070,73 @@
       target:
         entity_id: fan.guestbedroom_purifier
   mode: single
+- id: '1697376884533'
+  alias: 'Switch: Turn off Aquarium pump overnight'
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.bedtime_start
+    id: start
+  - platform: time
+    at: input_datetime.bedtime_end
+    id: end
+  condition: []
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - start
+    then:
+    - service: switch.turn_off
+      data: {}
+      target:
+        entity_id: switch.livingroom_aquarium_pump
+    alias: Turn off pump
+  - alias: Turn on pump
+    if:
+    - condition: trigger
+      id:
+      - end
+    then:
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.livingroom_aquarium_pump
+  mode: single
+- id: '1697377026062'
+  alias: 'Fan: Manually toggle fan if switched at outlet'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.masterbedroom_fan
+    to: 'on'
+    id: 'on'
+  - platform: state
+    entity_id:
+    - switch.masterbedroom_fan
+    to: 'off'
+    id: 'off'
+  condition: []
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - 'on'
+    then:
+    - service: fan.turn_on
+      data: {}
+      target:
+        entity_id: fan.masterbedroom_fan
+    alias: Turn on fan
+  - alias: Turn off fan
+    if:
+    - condition: trigger
+      id:
+      - 'off'
+    then:
+    - service: fan.turn_off
+      data: {}
+      target:
+        entity_id: fan.masterbedroom_fan
+  mode: single
