@@ -246,14 +246,6 @@
     data: {}
     target:
       entity_id: switch.adaptivelighting_sleep
-  - if:
-    - condition: state
-      entity_id: fan.guestbedroom_purifier
-      state: 'on'
-    then:
-    - service: climate.set_preset_mode
-      data:
-        preset_mode: sleep
   mode: single
 - id: '1687094522566'
   alias: 'General: Exit Bedtime Mode'
@@ -267,14 +259,6 @@
     data: {}
     target:
       entity_id: switch.adaptivelighting_sleep
-  - if:
-    - condition: state
-      entity_id: fan.guestbedroom_purifier
-      state: 'on'
-    then:
-    - service: fan.set_preset_mode
-      data:
-        preset_mode: gentle
   mode: single
 - id: '1687095382667'
   alias: 'Meta: Turn off Sony X80J if powered off at wall'
