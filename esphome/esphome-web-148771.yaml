@@ -25,7 +25,7 @@ sensor:
     name: 'Amplifier Temperature'
     id: livingroom_hifi_fan_temperature
     on_value_range:
-      - above: 28.0
+      - above: 30.0
         then:
           - switch.turn_on: livingroom_hifi_fan
       - below: 26.0
