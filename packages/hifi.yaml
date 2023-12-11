@@ -7,13 +7,6 @@ input_select:
       - "TV"
     name: Living Room TV
 
-# Check BD Transport Manual Off/On
-binary_sensor:
-  - platform: ping
-    name: ubpx700_ping
-    host: !secret ubpx700_ping
-    scan_interval: 30
-
 media_player:
   - platform: smartir
     name: Cambridge AXR85

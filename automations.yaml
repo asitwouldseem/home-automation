@@ -200,7 +200,7 @@
       milliseconds: 0
   - service: media_player.select_source
     data:
-      source: Stereo 1
+      source: Coaxial
     target:
       entity_id: media_player.masterbedroom_speakers
   mode: single
@@ -1139,4 +1139,22 @@
       data: {}
       target:
         entity_id: fan.masterbedroom_fan
+  mode: single
+- id: '1700563536375'
+  alias: 'Squeezebox: Turn off players in Living Room and Kitchen when TV turned on'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.livingroom_hifi_x80j
+    to: 'on'
+    from: 'off'
+  condition: []
+  action:
+  - service: media_player.turn_off
+    data: {}
+    target:
+      entity_id:
+      - media_player.hifi
+      - media_player.radio
   mode: single
