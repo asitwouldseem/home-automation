@@ -4,7 +4,7 @@ esphome:
   on_boot:
     priority: 200.0
     then:
-      - delay: 5s
+      - delay: 2s
       - switch.turn_on: dashboard_on
 
 esp32:
@@ -194,6 +194,6 @@ wifi:
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: "Esphome-Web-1B0C70"
-    password: "D2Pj1MIedpvU"
+    password: !secret wifi_fallback
 
 captive_portal:
