@@ -1,33 +1,23 @@
 esphome:
-  name: esphome-web-34e964
-  friendly_name: doorbell-chime
+  name: esphome-web-b94825
+  friendly_name: door-chime
 
-esp32:
-  board: esp32dev
-  framework:
-    type: arduino
+esp8266:
+  board: d1_mini
 
 # Enable logging
 logger:
 
-# Enable Home Assistant API
-api:
-  encryption:
-    key: !secret doorbell_key
-
-ota:
-
 # Assign solenoids as outputs.
 output:
   - platform: gpio
-    pin: 1
+    pin: D1
     id: striker_1
   - platform: gpio
-    pin: 21
+    pin: D2
     id: striker_2
 
 button:
-  # Buttons for individual solenoids
   - platform: output
     id: doorbell_1
     name: "Doorbell Striker 1"
@@ -45,8 +35,15 @@ button:
     on_press:
       then:
        - button.press: doorbell_1
-       - delay: 250ms
+       - delay: 500ms
        - button.press: doorbell_2
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret chime_key
+
+ota:
 
 wifi:
   ssid: !secret wifi_ssid
@@ -54,7 +51,7 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "Esphome-Web-34E964"
+    ssid: "Esphome-Web-B94825"
     password: !secret wifi_fallback
 
 captive_portal:
