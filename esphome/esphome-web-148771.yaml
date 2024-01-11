@@ -10,7 +10,7 @@ logger:
 
 switch:
   - platform: gpio
-    pin: D5
+    pin: D8
     name: 'HiFi Fan'
     id: livingroom_hifi_fan
     restore_mode: ALWAYS_OFF
@@ -31,6 +31,12 @@ sensor:
       - below: 26.0
         then:
           - switch.turn_off: livingroom_hifi_fan
+
+remote_receiver:
+  pin:
+    number: D5
+    inverted: true
+  dump: all
 
 # Enable Home Assistant API
 api:

@@ -11,10 +11,10 @@ logger:
 # Assign solenoids as outputs.
 output:
   - platform: gpio
-    pin: D1
+    pin: D2
     id: striker_1
   - platform: gpio
-    pin: D2
+    pin: D1
     id: striker_2
 
 button:
@@ -22,12 +22,12 @@ button:
     id: doorbell_1
     name: "Doorbell Striker 1"
     output: striker_1
-    duration: 250ms
+    duration: 2ms
   - platform: output
     id: doorbell_2
     name: "Doorbell Striker 2"
     output: striker_2
-    duration: 250ms
+    duration: 2ms
 
   # Template button for 'front door' chime
   - platform: template
@@ -35,7 +35,7 @@ button:
     on_press:
       then:
        - button.press: doorbell_1
-       - delay: 500ms
+       - delay: 550ms
        - button.press: doorbell_2
 
 # Enable Home Assistant API
