@@ -1,12 +1,4 @@
 sensor:
-  # VM Monitoring
-  # home-assistant.io/integrations/systemmonitor/
-  - platform: systemmonitor
-    resources:
-      - type: disk_use_percent
-        arg: /config
-      - type: memory_use_percent
-
   # Waste Collection
   # github.com/mark1foley/Brisbane-Bin-Day-Sensor
   - platform: bne_wc
