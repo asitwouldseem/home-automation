@@ -17,6 +17,8 @@ switch:
 
 # Expose IR commands as buttons for the Universal Media Player integration.
 button:
+
+  # Cambridge AXR85 Receiver
   - platform: template
     id: axr85_toggle
     name: "Cambridge AXR85 Toggle"
@@ -65,6 +67,26 @@ button:
     on_press:
       remote_transmitter.transmit_pronto:
         data: "0000 006d 0024 0000 0155 00a9 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0040 0015 0040 0015 0040 0015 0040 0015 0040 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 0040 0015 0015 0015 0040 0015 0040 0015 0015 0015 0015 0015 0015 0015 0040 0015 0015 0015 0040 0015 05ec 0155 0055 0015 0e46"
+
+  # Topping E30 DAC
+  - platform: template
+    id: topping_toggle
+    name: "Topping E30 Toggle"
+    on_press:
+      remote_transmitter.transmit_pronto:
+        data: "0018 003F 0017 0014 0017 0014 0018 0014 0017 003F 0017 003F 0018 003F 0017 0014 0018 0014 0018 003F 0017 003F 0017 003F 0018 0181 06C3"
+  - platform: template
+    id: topping_left
+    name: "Topping E30 Left"
+    on_press:
+      remote_transmitter.transmit_pronto:
+        data: "0018 0014 0018 0014 0017 003F 0018 0014 0018 0014 0017 0014 0017 0014 0017 003F 0018 003F 0017 003F 0017 0014 0018 003F 0018 0181 06C3"
+  - platform: template
+    id: topping_right
+    name: "Topping E30 Right"
+    on_press:
+      remote_transmitter.transmit_pronto:
+        data: "0018 003F 0018 0014 0017 0014 0017 0014 0018 0014 0018 003F 0017 0014 0017 003F 0018 0014 0018 003F 0017 003F 0017 003F 0018 0181 06C3"
 
 # Dallas sensors
 dallas:
