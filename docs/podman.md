@@ -10,9 +10,11 @@ podman run -d
 	--restart=unless-stopped
 	-v "/home/cameron/apps/lms/config":"/config":z
 	-v "/home/cameron/apps/lms/playlist":"/playlist":z
-	-v "/mnt/music":"/music":ro
+	--mount type=bind,source=/mnt/music,destination=/music,ro=true
 docker.io/lmscommunity/logitechmediaserver:stable
 ```
+
+You will need to run `sudo setsebool virt_use_samba on` to keep SELinux happy. As well as ports 5353/udp, 65535/tcp and 4070/tcp for Spotify Connect.
 
 ## Jellyfin
 ```
