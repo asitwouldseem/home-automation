@@ -24,6 +24,7 @@ podman run -d
 	-p 8096:8096/tcp
 	-v /home/cameron/apps/jellyfin/cache:/cache:Z
 	-v /home/cameron/apps/jellyfin/config:/config:Z
+	--device /dev/dri/:/dev/dri/
 	--mount type=bind,source=/mnt/books,destination=/books,ro=true
 	--mount type=bind,source=/mnt/music,destination=/music,ro=true
 	--mount type=bind,source=/mnt/movies,destination=/movies,ro=true

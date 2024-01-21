@@ -1,0 +1,10 @@
+[Unit]
+Description=Squeezelite headless streaming music client
+
+After=network.target
+
+[Service]
+ExecStart=squeezelite -o hw:CARD=E30,DEV=0 -s 10.0.1.202 -D u32b -n HiFi -a 80:4
+
+[Install]
+WantedBy=multi-user.target
