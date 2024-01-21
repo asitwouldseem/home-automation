@@ -3,10 +3,26 @@ esphome:
   name: esphome-web-148771
 
 esp8266:
-  board: d1_mini
+  board: d1_mini_pro
 
 # Enable logging
 logger:
+
+select:
+  - platform: template
+    name: 'Chosen Source'
+    id: select_source
+    optimistic: true
+    options:
+      - HDMI 1
+      - HDMI 2
+      - HDMI 3
+
+# Output for changing HDMI source.
+output:
+  - platform: gpio
+    pin: D3
+    id: change_input
 
 switch:
   - platform: gpio
@@ -17,6 +33,15 @@ switch:
 
 # Expose IR commands as buttons for the Universal Media Player integration.
 button:
+
+  # UGREEN HDMI Switch
+  - platform: output
+    id: hdmi_switch
+    name: "HDMI Switch"
+    output: change_input
+    duration: 2ms
+    on_press:
+      - select.next: select_source
 
   # Cambridge AXR85 Receiver
   - platform: template
@@ -68,25 +93,7 @@ button:
       remote_transmitter.transmit_pronto:
         data: "0000 006d 0024 0000 0155 00a9 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0040 0015 0040 0015 0040 0015 0040 0015 0040 0015 0040 0015 0015 0015 0015 0015 0015 0015 0015 0015 0040 0015 0040 0015 0040 0015 0015 0015 0040 0015 0015 0015 0040 0015 0040 0015 0015 0015 0015 0015 0015 0015 0040 0015 0015 0015 0040 0015 05ec 0155 0055 0015 0e46"
 
-  # Topping E30 DAC
-  - platform: template
-    id: topping_toggle
-    name: "Topping E30 Toggle"
-    on_press:
-      remote_transmitter.transmit_pronto:
-        data: "0018 003F 0017 0014 0017 0014 0018 0014 0017 003F 0017 003F 0018 003F 0017 0014 0018 0014 0018 003F 0017 003F 0017 003F 0018 0181 06C3"
-  - platform: template
-    id: topping_left
-    name: "Topping E30 Left"
-    on_press:
-      remote_transmitter.transmit_pronto:
-        data: "0018 0014 0018 0014 0017 003F 0018 0014 0018 0014 0017 0014 0017 0014 0017 003F 0018 003F 0017 003F 0017 0014 0018 003F 0018 0181 06C3"
-  - platform: template
-    id: topping_right
-    name: "Topping E30 Right"
-    on_press:
-      remote_transmitter.transmit_pronto:
-        data: "0018 003F 0018 0014 0017 0014 0017 0014 0018 0014 0018 003F 0017 0014 0017 003F 0018 0014 0018 003F 0017 003F 0017 003F 0018 0181 06C3"
+  # Sony X700 BD Transport
 
 # Dallas sensors
 dallas:
@@ -101,7 +108,7 @@ sensor:
       - above: 30.0
         then:
           - switch.turn_on: livingroom_hifi_fan
-      - below: 26.0
+      - below: 28.0
         then:
           - switch.turn_off: livingroom_hifi_fan
 
@@ -131,6 +138,8 @@ wifi:
     static_ip: 10.0.1.116
     gateway: 10.0.1.1
     subnet: 255.255.255.0
+    dns1: 10.0.1.100
+    dns2: 10.0.1.103
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:

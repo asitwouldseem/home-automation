@@ -13,7 +13,6 @@ homeassistant:
 # Custom history
 # home-assistant.io/integrations/history
 recorder:
-  purge_keep_days: 14
   exclude:
     entities:
       - sensor.brisbane_city_train
@@ -48,7 +47,7 @@ zha:
 panel_iframe:
   music:
     title: "Music"
-    url: "http://10.0.1.100:9000/material"
+    url: "http://10.0.1.202:9000/material"
     icon: mdi:music
 
 # Adjust light temperature throughout the day
