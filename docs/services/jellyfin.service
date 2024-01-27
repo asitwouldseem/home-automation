@@ -1,0 +1,10 @@
+[Unit]
+Description=Jellyfin Pod
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/podman start -a jellyfin
+ExecStop=/usr/bin/podman stop -t 2 jellyfin
+
+[Install]
+WantedBy=multi-user.target

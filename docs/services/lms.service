@@ -1,0 +1,10 @@
+[Unit]
+Description=Logitech Media Server Pod
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/podman start -a lms
+ExecStop=/usr/bin/podman stop -t 2 lms
+
+[Install]
+WantedBy=multi-user.target

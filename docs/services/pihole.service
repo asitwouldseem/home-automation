@@ -1,0 +1,10 @@
+[Unit]
+Description=Pihole Pod
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/podman start -a pihole
+ExecStop=/usr/bin/podman stop -t 2 piholer
+
+[Install]
+WantedBy=multi-user.target
