@@ -24,29 +24,6 @@ light:
               variables:
                 remote: "remote.livingroom_rm4"
 
-      masterbedroom_bowl:
-        friendly_name: "Bowl"
-        effect_list_template: "{{ state_attr('input_select.bowl_light_effects', 'options') }}"
-        effect_template: "{{ states('input_select.bowl_light_effects') }}"
-        turn_on:
-          service: remote.send_command
-          data:
-            command: b64:JgBQAAABJpQSExMTEhMSExITEhMSExIUEjcSNxI3EzcSNxI3EzcSNxI3ExMSNxITEhMSExI3ExMSExI3EhMSOBI3EjcSExM3EgAFFwABKEoTAA0F
-          target:
-            entity_id: remote.masterbedroom_rm4
-        turn_off:
-          service: remote.send_command
-          data:
-            command: b64:JgBYAAABJpQSExMTEhMSExITEhMSExITEzcSNxI3EjgROBM2EjgSNxE4EzcSNxITEhMSExM3ERQSExITERQTNxI3EjcSExI4EgAFGAABJ0sSAAxHAAEoShEADQU=
-          target:
-            entity_id: remote.masterbedroom_rm4
-        set_effect:
-          - service: script.turn_on
-            data:
-              entity_id: "script.ir_effect_{{ effect }}"
-              variables:
-                remote: "remote.masterbedroom_rm4"
-
 script:
   ir_effect_combination:
     alias: Comination effect

@@ -1,5 +1,5 @@
 esphome:
-  friendly_name: 'hifi-fan'
+  friendly_name: "hifi-fan"
   name: esphome-web-148771
 
 esp8266:
@@ -8,40 +8,59 @@ esp8266:
 # Enable logging
 logger:
 
+uart:
+  tx_pin: D3
+  baud_rate: 9600
+  data_bits: 8
+  stop_bits: 1
+  parity: none
+
 select:
   - platform: template
-    name: 'Chosen Source'
-    id: select_source
+    name: "TV Source"
+    id: hdmi1
     optimistic: true
+    restore_value: true
     options:
-      - HDMI 1
-      - HDMI 2
-      - HDMI 3
+      - Bluray
+      - Apple TV
+    on_value:
+      - uart.write: !lambda |-
+          if (id(hdmi1).active_index() == 0) {
+            return std::vector<uint8_t>{'P', 'S', '1', '1', 'R'};
+          } else if (id(hdmi1).active_index() == 1) {
+            return std::vector<uint8_t>{'P', 'S', '1', '2', 'R'};
+          } else {
+            return std::vector<uint8_t>{};
+          }
 
-# Output for changing HDMI source.
-output:
-  - platform: gpio
-    pin: D3
-    id: change_input
+  - platform: template
+    name: "Hyperion Source"
+    id: hdmi2
+    optimistic: true
+    restore_value: true
+    options:
+      - Bluray
+      - Apple TV
+    on_value:
+      - uart.write: !lambda |-
+          if (id(hdmi2).active_index() == 0) {
+            return std::vector<uint8_t>{'P', 'S', '2', '1', 'R'};
+          } else if (id(hdmi2).active_index() == 1) {
+            return std::vector<uint8_t>{'P', 'S', '2', '2', 'R'};
+          } else {
+            return std::vector<uint8_t>{};
+          }
 
 switch:
   - platform: gpio
     pin: D8
-    name: 'HiFi Fan'
+    name: "HiFi Fan"
     id: livingroom_hifi_fan
     restore_mode: ALWAYS_OFF
 
 # Expose IR commands as buttons for the Universal Media Player integration.
 button:
-
-  # UGREEN HDMI Switch
-  - platform: output
-    id: hdmi_switch
-    name: "HDMI Switch"
-    output: change_input
-    duration: 2ms
-    on_press:
-      - select.next: select_source
 
   # Cambridge AXR85 Receiver
   - platform: template
@@ -102,7 +121,7 @@ dallas:
 sensor:
   - platform: dallas
     address: 0x583cf5e38175f728
-    name: 'Amplifier Temperature'
+    name: "Amplifier Temperature"
     id: livingroom_hifi_fan_temperature
     on_value_range:
       - above: 30.0
@@ -111,12 +130,6 @@ sensor:
       - below: 28.0
         then:
           - switch.turn_off: livingroom_hifi_fan
-
-remote_receiver:
-  pin:
-    number: D5
-    inverted: true
-  dump: all
 
 remote_transmitter:
   pin: D7

@@ -914,24 +914,6 @@
       message: 'Reminder: Drench the robot mop. Just one small, soggy task in an unfeeling
         universe.'
   mode: single
-- id: '1693523961096'
-  alias: 'Vacuum: Send Rosie home if job running and Cameron arrives home'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.cameron_status
-    to: Home
-  condition:
-  - condition: state
-    entity_id: vacuum.roaming_rosie
-    state: cleaning
-  action:
-  - service: vacuum.return_to_base
-    data: {}
-    target:
-      entity_id: vacuum.roaming_rosie
-  mode: single
 - id: '1696749406796'
   alias: 'Media Player: Update friendly source when source changed manually'
   description: ''
