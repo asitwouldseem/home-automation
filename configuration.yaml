@@ -42,14 +42,6 @@ zha:
       ikea_provider: true
       otau_directory: /partials/zigpy_ota
 
-# Add LMS to sidebar
-# home-assistant.io/integrations/panel_iframe
-panel_iframe:
-  music:
-    title: "Music"
-    url: "http://10.0.1.202:9000/material"
-    icon: mdi:music
-
 # Adjust light temperature throughout the day
 # github.com/basnijholt/adaptive-lighting
 adaptive_lighting:
