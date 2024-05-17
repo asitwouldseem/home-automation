@@ -167,13 +167,13 @@
     data: {}
   mode: single
 - id: '1687078248102'
-  alias: 'ZHA: Bedside Table Remote'
+  alias: 'ZHA: Spaceship Remote'
   description: ''
   use_blueprint:
-    path: niro1987/zha_ikea_tradfri_5button_remote_white.yaml
+    path: niro1987/zha_ikea_tradfri_5button_remote_color.yaml
     input:
       remote: 92223997d20ee69fcb398ca1260dbb5f
-      light: light.masterbedroom_bedsidetable
+      light: light.livingroom_spaceship
 - id: '1687093432934'
   alias: 'Squeezebox: Turn on Master Bedroom speakers when stream starts'
   description: ''
@@ -447,7 +447,7 @@
         entity_id: switch.livingroom_hifi
   mode: single
 - id: '1687593976178'
-  alias: 'ZHA: Toggle Master Bedroom speaker when desk remote short pressed'
+  alias: 'ZHA: Toggle speaker and backlight when short pressed'
   description: ''
   trigger:
   - device_id: 035d2dbff342eab28e548ae56ea25f4c
@@ -457,6 +457,11 @@
     subtype: remote_button_short_press
   condition: []
   action:
+  - service: light.toggle
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.masterbedroom_monitorbacklight
   - service: media_player.toggle
     data: {}
     target:
@@ -1140,3 +1145,39 @@
       - media_player.hifi
       - media_player.radio
   mode: single
+- id: '1715934255990'
+  alias: 'Helper: Bedside Table 1'
+  description: ''
+  use_blueprint:
+    path: EPMatt/light.yaml
+    input:
+      controller_device: 2996450ed594af7597fed6b4d1538a52
+      controller_model: IKEA E2001/E2002 STYRBAR Remote control
+      light: light.masterbedroom_bedsidetableps
+- id: '1715934344363'
+  alias: 'Helper: Bedside Table 2'
+  description: ''
+  use_blueprint:
+    path: EPMatt/light.yaml
+    input:
+      controller_device: 5b43b8e80a52b36bfc4bb8560a8a7e64
+      controller_model: IKEA E2001/E2002 STYRBAR Remote control
+      light: light.masterbedroom_bedsidetableop
+- id: '1715934458472'
+  alias: 'ZHA: Bedside Table (Right)'
+  description: ''
+  use_blueprint:
+    path: EPMatt/ikea_e2001_e2002.yaml
+    input:
+      integration: ZHA
+      controller_device: 5b43b8e80a52b36bfc4bb8560a8a7e64
+      helper_last_controller_event: input_text.bedside_table_right_remote
+- id: '1715934518850'
+  alias: 'ZHA: Bedside Table (Left)'
+  description: ''
+  use_blueprint:
+    path: EPMatt/ikea_e2001_e2002.yaml
+    input:
+      integration: ZHA
+      controller_device: 2996450ed594af7597fed6b4d1538a52
+      helper_last_controller_event: input_text.bedside_table_left_remote

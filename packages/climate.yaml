@@ -102,14 +102,6 @@ script:
     icon: mdi:fan
     mode: single
     sequence:
-      - service: switch.turn_on
-        target:
-          entity_id: switch.masterbedroom_fan
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 0
-          milliseconds: 500
       - service: remote.send_command
         data:
           command: b64:JgBQAAABK5IUEhITEhMTEhM2FDYSExITEzYUNRM3EjcTEhMSEzcSNxM2EzYTNxMSEzYTEhMSEzcTEhMSExIUNRMTEjcTNhMSEwAFFwABK0kTAA0F
@@ -127,9 +119,6 @@ script:
     icon: mdi:fan
     mode: single
     sequence:
-      - service: switch.turn_off
-        target:
-          entity_id: switch.masterbedroom_fan
       - service: input_number.set_value
         data:
           entity_id: input_number.masterbedroom_fan_speed
