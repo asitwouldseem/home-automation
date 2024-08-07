@@ -63,13 +63,6 @@ template:
           bin_day: >
             {{ states('sensor.brisbane_bin_day') }}
 
-# A simple way to check whether the battery needs charging. See: automation block below.
-binary_sensor:
-  - platform: ping
-    name: dashboard1_ping
-    host: !secret dashboard1_ping
-    scan_interval: 3600
-
 automation:
   - id: "1693137322240"
     alias: "Notify: Send Telegram message when dashboard goes offline"
