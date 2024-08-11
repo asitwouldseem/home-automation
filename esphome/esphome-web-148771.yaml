@@ -115,11 +115,12 @@ button:
   # Sony X700 BD Transport
 
 # Dallas sensors
-dallas:
-  - pin: D4
+one_wire:
+  - platform: gpio
+    pin: D4
 
 sensor:
-  - platform: dallas
+  - platform: dallas_temp
     address: 0x583cf5e38175f728
     name: "Amplifier Temperature"
     id: livingroom_hifi_fan_temperature
@@ -141,6 +142,7 @@ api:
     key: !secret hififan_key
 
 ota:
+  - platform: esphome
 
 wifi:
   ssid: !secret wifi_ssid

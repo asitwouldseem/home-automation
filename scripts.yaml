@@ -1,16 +1,6 @@
 tv_start:
   alias: TV Start
   sequence:
-  - service: switch.turn_on
-    data: {}
-    target:
-      entity_id: switch.livingroom_hifi
-    alias: Turn the HiFI on at the wall
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 5
-      milliseconds: 0
   - if:
     - condition: state
       entity_id: media_player.livingroom_hifi_axr85
@@ -26,11 +16,6 @@ tv_start:
       target:
         entity_id: media_player.livingroom_hifi_axr85
     alias: Turn on Cambridge AXR85
-  - delay:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
   - service: media_player.turn_on
     data: {}
     target:
@@ -83,10 +68,6 @@ tv_stop:
       minutes: 0
       seconds: 10
       milliseconds: 0
-  - service: switch.turn_off
-    data: {}
-    target:
-      entity_id: switch.livingroom_hifi
   - service: input_select.select_option
     data:
       option: TV

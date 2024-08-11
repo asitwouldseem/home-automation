@@ -1,5 +1,5 @@
 - id: '1687047864595'
-  alias: 'Light: Turn on TV backlight when TV turned on'
+  alias: 'Media: Turn on TV accessories when TV turned on'
   description: ''
   trigger:
   - platform: state
@@ -15,9 +15,14 @@
       transition: 10
     target:
       entity_id: light.livingroom_hifi_tvbacklight
+  - service: media_player.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: media_player.livingroom_hifi_axr85
   mode: single
 - id: '1687047895953'
-  alias: 'Light: Turn off TV backlight when TV turned off'
+  alias: 'Media: Turn off TV accessories when TV turned off'
   description: ''
   trigger:
   - platform: state
@@ -31,6 +36,11 @@
       transition: 10
     target:
       entity_id: light.livingroom_hifi_tvbacklight
+  - service: media_player.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: media_player.livingroom_hifi_axr85
   mode: single
 - id: '1687073560621'
   alias: 'Meta: Turn off Cambridge AXR85 if powered off at wall'
@@ -260,25 +270,6 @@
     target:
       entity_id: switch.adaptivelighting_sleep
   mode: single
-- id: '1687095382667'
-  alias: 'Meta: Turn off Sony X80J if powered off at wall'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - switch.livingroom_hifi
-    from: 'on'
-    to: 'off'
-  condition:
-  - condition: state
-    entity_id: media_player.livingroom_hifi_x80j
-    state: 'On'
-  action:
-  - service: media_player.turn_off
-    data: {}
-    target:
-      entity_id: media_player.livingroom_hifi_x80j
-  mode: single
 - id: '1687184095823'
   alias: 'Media Player: Turn off TV if fallen asleep'
   description: ''
@@ -461,7 +452,7 @@
     metadata: {}
     data: {}
     target:
-      entity_id: light.masterbedroom_monitorbacklight
+      entity_id: light.masterbedroom_desk_control
   - service: media_player.toggle
     data: {}
     target:
@@ -507,59 +498,6 @@
     data: {}
     target:
       entity_id: light.livingroom_bookcase
-  mode: single
-- id: '1688544680925'
-  alias: 'Light: Toggle bookcase light while watching Apple TV in the dark'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - media_player.livingroom_hifi_appletv
-    to: playing
-    id: playing
-  - platform: state
-    entity_id:
-    - media_player.livingroom_hifi_appletv
-    to: paused
-    id: paused
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 2
-  - platform: state
-    entity_id:
-    - media_player.livingroom_hifi_appletv
-    to: standby
-    id: standby
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.livingroom_motionsensor_illuminance
-    below: 5
-  action:
-  - if:
-    - condition: trigger
-      id: paused
-    then:
-    - service: light.turn_on
-      data: {}
-      target:
-        entity_id: light.livingroom_bookcase
-  - if:
-    - condition: trigger
-      id: playing
-    then:
-    - service: light.turn_off
-      data: {}
-      target:
-        entity_id: light.livingroom_bookcase
-  - if:
-    - condition: trigger
-      id: standby
-    then:
-    - service: light.turn_off
-      data: {}
-      target:
-        entity_id: light.livingroom_bookcase
   mode: single
 - id: '1688810652166'
   alias: 'Light: Turn off lights if left on for more than 5 hours'
@@ -607,58 +545,6 @@
       data: {}
       target:
         entity_id: media_player.hifi
-  mode: single
-- id: '1689325164904'
-  alias: 'Vacuum: Turn on lights when dark to allow robot to navigate'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - vacuum.roaming_rosie
-    to: cleaning
-    from:
-    id: cleaning
-  - platform: state
-    entity_id:
-    - vacuum.roaming_rosie
-    to: docked
-    from:
-    id: docked
-  - platform: state
-    entity_id:
-    - vacuum.roaming_rosie
-    to: error
-    from:
-    id: error
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.livingroom_motionsensor_illuminance
-    below: 2
-  action:
-  - if:
-    - condition: trigger
-      id:
-      - cleaning
-    then:
-    - service: light.turn_on
-      data:
-        brightness_pct: 25
-      target:
-        area_id:
-        - living_room
-        - bedroom
-  - if:
-    - condition: trigger
-      id:
-      - docked
-      - error
-    then:
-    - service: light.turn_off
-      data: {}
-      target:
-        area_id:
-        - living_room
-        - bedroom
   mode: single
 - id: '1689334694274'
   alias: 'Motion: Turn on TV Backlight when motion detected at night'
@@ -1090,43 +976,6 @@
       target:
         entity_id: switch.livingroom_aquarium_pump
   mode: single
-- id: '1697377026062'
-  alias: 'Fan: Manually toggle fan if switched at outlet'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - switch.masterbedroom_fan
-    to: 'on'
-    id: 'on'
-  - platform: state
-    entity_id:
-    - switch.masterbedroom_fan
-    to: 'off'
-    id: 'off'
-  condition: []
-  action:
-  - if:
-    - condition: trigger
-      id:
-      - 'on'
-    then:
-    - service: fan.turn_on
-      data: {}
-      target:
-        entity_id: fan.masterbedroom_fan
-    alias: Turn on fan
-  - alias: Turn off fan
-    if:
-    - condition: trigger
-      id:
-      - 'off'
-    then:
-    - service: fan.turn_off
-      data: {}
-      target:
-        entity_id: fan.masterbedroom_fan
-  mode: single
 - id: '1700563536375'
   alias: 'Squeezebox: Turn off players in Living Room and Kitchen when TV turned on'
   description: ''
@@ -1181,3 +1030,76 @@
       integration: ZHA
       controller_device: 2996450ed594af7597fed6b4d1538a52
       helper_last_controller_event: input_text.bedside_table_left_remote
+- id: '1723351002366'
+  alias: 'Remote: Bathroom Music Remote'
+  description: ''
+  use_blueprint:
+    path: cooljimy84/zha-ikea-symfonisk-square-sound-controller.yaml
+    input:
+      remote: 2c7192e464c71a0f783635402a5b551c
+      media_player:
+        entity_id:
+        - media_player.masterbedroom
+        - media_player.masterbedroom_speakers
+- id: '1723351825398'
+  alias: 'Media: Turn on speakers when Apple TV turns on'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.masterbedroom_appletv
+    from: standby
+    to: 'on'
+  condition: []
+  action:
+  - service: media_player.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: media_player.masterbedroom_speakers
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: media_player.select_source
+    metadata: {}
+    data:
+      source: Stereo 2
+    target:
+      entity_id: media_player.masterbedroom_speakers
+  mode: single
+- id: '1723351945124'
+  alias: 'Media: Turn off speakers when Apple TV turns off'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.masterbedroom_appletv
+    to: 'off'
+    from:
+  condition: []
+  action:
+  - service: media_player.turn_off
+    target:
+      entity_id:
+      - media_player.masterbedroom_speakers
+    data: {}
+  mode: single
+- id: '1723352187915'
+  alias: 'Media Player: Turn off Apple TV if fallen asleep'
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.sleep_watcher
+  condition:
+  - condition: state
+    entity_id: media_player.livingroom_hifi_appletv
+    state: 'on'
+  action:
+  - service: media_player.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: media_player.masterbedroom_appletv
+  mode: single
