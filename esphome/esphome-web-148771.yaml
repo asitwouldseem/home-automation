@@ -153,7 +153,7 @@ wifi:
     static_ip: 10.0.1.116
     gateway: 10.0.1.1
     subnet: 255.255.255.0
-    dns1: 10.0.1.100
+    dns1: 10.0.1.202
     dns2: 10.0.1.103
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails

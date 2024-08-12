@@ -1049,7 +1049,7 @@
     entity_id:
     - media_player.masterbedroom_appletv
     from: standby
-    to: 'on'
+    to:
   condition: []
   action:
   - service: media_player.turn_on
@@ -1076,8 +1076,7 @@
   - platform: state
     entity_id:
     - media_player.masterbedroom_appletv
-    to: 'off'
-    from:
+    to: standby
   condition: []
   action:
   - service: media_player.turn_off

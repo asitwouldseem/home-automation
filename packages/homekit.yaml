@@ -19,13 +19,14 @@ homekit:
         - fan.masterbedroom_fan
         - fan.guestbedroom_purifier
         - fan.livingroom_hifi_fan
+        - fan.masterbedroom_desk_control
         - media_player.masterbedroom_speakers
         - media_player.livingroom_hifi_axr85
         - media_player.livingroom_hifi_ubpx700
       exclude_entities:
         - switch.10_0_1_101_allow_calls
-        - switch.masterbedroom_fan
         - switch.livingroom_dashboard1_power
+        - light.bambi_chamber_light
         - light.adaptive_lighting
         - light.timer_lights
         - light.presence_simulation

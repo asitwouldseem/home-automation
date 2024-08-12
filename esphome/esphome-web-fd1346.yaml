@@ -14,20 +14,33 @@ esphome:
 esp8266:
   board: d1_mini
 
+binary_sensor:
+  - platform: gpio
+    id: btn1
+    pin: D6
+    on_press:
+      - light.toggle: monitor_light
+  - platform: gpio
+    id: btn2
+    pin: D7
+    on_press:
+      - fan.toggle: desk_fan
+
 output:
   - platform: gpio
     pin: D1
     id: led_relay
   - platform: gpio
     pin: D2
-    id: desk_fan
+    id: usb_power
 
 light:
   - platform: neopixelbus
+    id: monitor_light
     type: GRB
     variant: WS2812
     pin: D4
-    num_leds: 60
+    num_leds: 52
     name: "Monitor Light"
     on_turn_on:
       - output.turn_on: led_relay
@@ -36,10 +49,11 @@ light:
 
 fan:
   - platform: template
+    id: desk_fan
     restore_mode: ALWAYS_OFF
     name: "Desk Fan"
     on_state:
-      - output.turn_on: desk_fan
+      - output.turn_on: usb_power
 
 # Enable logging
 logger:
