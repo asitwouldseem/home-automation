@@ -1030,17 +1030,6 @@
       integration: ZHA
       controller_device: 2996450ed594af7597fed6b4d1538a52
       helper_last_controller_event: input_text.bedside_table_left_remote
-- id: '1723351002366'
-  alias: 'Remote: Bathroom Music Remote'
-  description: ''
-  use_blueprint:
-    path: cooljimy84/zha-ikea-symfonisk-square-sound-controller.yaml
-    input:
-      remote: 2c7192e464c71a0f783635402a5b551c
-      media_player:
-        entity_id:
-        - media_player.masterbedroom
-        - media_player.masterbedroom_speakers
 - id: '1723351825398'
   alias: 'Media: Turn on speakers when Apple TV turns on'
   description: ''
@@ -1101,4 +1090,140 @@
     data: {}
     target:
       entity_id: media_player.masterbedroom_appletv
+  mode: single
+- id: '1723437790679'
+  alias: 'Printer: Turn on Air Purifier when 3D Printer running'
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 66468238637c2caad3995df1dc3a82dd
+    domain: bambu_lab
+    type: event_print_started
+  condition:
+  - condition: state
+    entity_id: fan.guestbedroom_purifier
+    state: 'off'
+  action:
+  - service: fan.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: fan.guestbedroom_purifier
+  mode: single
+- id: '1723438319456'
+  alias: 'ZHA: Bathroom remote'
+  description: ''
+  trigger:
+  - device_id: 2c7192e464c71a0f783635402a5b551c
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: toggle
+    id: toggle
+  - device_id: 2c7192e464c71a0f783635402a5b551c
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: dim_up
+    id: dim_up
+  - device_id: 2c7192e464c71a0f783635402a5b551c
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: dim_down
+    id: dim_down
+  - device_id: 2c7192e464c71a0f783635402a5b551c
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: right
+    id: right
+  - device_id: 2c7192e464c71a0f783635402a5b551c
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: left
+    id: left
+  - device_id: 2c7192e464c71a0f783635402a5b551c
+    domain: zha
+    platform: device
+    type: remote_button_long_press
+    subtype: dim_up
+    id: dim_up_long
+  - device_id: 2c7192e464c71a0f783635402a5b551c
+    domain: zha
+    platform: device
+    type: remote_button_long_press
+    subtype: dim_down
+    id: dim_down_long
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - toggle
+      sequence:
+      - service: media_player.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: media_player.masterbedroom
+    - conditions:
+      - condition: trigger
+        id:
+        - dim_up
+      sequence:
+      - service: media_player.volume_up
+        data: {}
+        target:
+          entity_id: media_player.masterbedroom_speakers
+    - conditions:
+      - condition: trigger
+        id:
+        - dim_down
+      sequence:
+      - service: media_player.volume_down
+        target:
+          entity_id:
+          - media_player.masterbedroom_speakers
+        data: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - left
+      sequence:
+      - service: media_player.media_previous_track
+        target:
+          entity_id: media_player.masterbedroom
+        data: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - right
+      sequence:
+      - service: media_player.media_next_track
+        target:
+          entity_id:
+          - media_player.masterbedroom
+        data: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - dim_up_long
+      sequence:
+      - service: media_player.volume_up
+        data: {}
+        target:
+          entity_id: media_player.masterbedroom_speakers
+    - conditions:
+      - condition: trigger
+        id:
+        - dim_down_long
+      sequence:
+      - service: media_player.volume_down
+        target:
+          entity_id:
+          - media_player.masterbedroom_speakers
+        data: {}
   mode: single
