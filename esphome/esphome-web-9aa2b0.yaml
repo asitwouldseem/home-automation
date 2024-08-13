@@ -14,10 +14,55 @@ esphome:
 esp32:
   board: wemos_d1_mini32
 
-esp32_ble_tracker:
+uart:
+  tx_pin: GPIO9
+  baud_rate: 9600
+  data_bits: 8
+  stop_bits: 1
+  parity: none
+
+select:
+  - platform: template
+    name: "TV Source"
+    id: hdmi1
+    optimistic: true
+    restore_value: true
+    options:
+      - Bluray
+      - GBS8200
+      - Apple TV
+    on_value:
+      - uart.write: !lambda |-
+          if (id(hdmi1).active_index() == 0) {
+            return std::vector<uint8_t>{'P', 'S', '1', '1', 'R'};
+          } else if (id(hdmi1).active_index() == 1) {
+            return std::vector<uint8_t>{'P', 'S', '1', '2', 'R'};
+          } else {
+            return std::vector<uint8_t>{};
+          }
+
+  - platform: template
+    name: "Hyperion Source"
+    id: hdmi2
+    optimistic: true
+    restore_value: true
+    options:
+      - Bluray
+      - GBS8200
+      - Apple TV
+    on_value:
+      - uart.write: !lambda |-
+          if (id(hdmi2).active_index() == 0) {
+            return std::vector<uint8_t>{'P', 'S', '2', '1', 'R'};
+          } else if (id(hdmi2).active_index() == 1) {
+            return std::vector<uint8_t>{'P', 'S', '2', '2', 'R'};
+          } else {
+            return std::vector<uint8_t>{};
+          }
 
 # InkBird C02 sensor
 # Thank you @ammaraskar! smarthomescene.com/guides/how-to-integrate-inkbird-iam-t1-air-quality-monitor-in-home-assistant
+esp32_ble_tracker:
 
 ble_client:
   - mac_address: 62:00:A1:35:9A:CC
