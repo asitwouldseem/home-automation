@@ -118,34 +118,6 @@
     target:
       entity_id: media_player.livingroom_hifi_ubpx700
   mode: single
-- id: '1687077267314'
-  alias: 'Media Player: Turn on Apple TV when source selected'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - media_player.livingroom_hifi_tv
-    attribute: source
-    to: Apple TV
-  condition: []
-  action:
-  - service: script.livingroom_hifi_appletv_on
-    data: {}
-  mode: single
-- id: '1687077342328'
-  alias: 'Media Player: Turn off Apple TV when source changes'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - media_player.livingroom_hifi_tv
-    attribute: source
-    from: Apple TV
-  condition: []
-  action:
-  - service: script.livingroom_hifi_appletv_off
-    data: {}
-  mode: single
 - id: '1687077619767'
   alias: 'ZHA: Toggle TV when HiFi remote short pressed'
   description: ''
@@ -210,7 +182,7 @@
       milliseconds: 0
   - service: media_player.select_source
     data:
-      source: Coaxial
+      source: Stereo 1
     target:
       entity_id: media_player.masterbedroom_speakers
   mode: single
