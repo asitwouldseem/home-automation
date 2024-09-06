@@ -15,6 +15,16 @@
       transition: 10
     target:
       entity_id: light.livingroom_hifi_tvbacklight
+  - service: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.livingroom_hifi
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 250
   - service: media_player.turn_on
     metadata: {}
     data: {}
@@ -36,6 +46,16 @@
       transition: 10
     target:
       entity_id: light.livingroom_hifi_tvbacklight
+  - service: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.livingroom_hifi
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 250
   - service: media_player.turn_off
     metadata: {}
     data: {}
