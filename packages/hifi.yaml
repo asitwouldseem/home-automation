@@ -42,9 +42,13 @@ media_player:
       - media_player.livingroom_hifi_x80j
     commands:
       turn_on:
-        service: script.tv_start
+        service: media_player.turn_on
+        target:
+          entity_id: media_player.livingroom_hifi_x80j
       turn_off:
-        service: script.tv_stop
+        service: media_player.turn_off
+        target:
+          entity_id: media_player.livingroom_hifi_x80j
       volume_up:
         service: media_player.volume_up
         target:

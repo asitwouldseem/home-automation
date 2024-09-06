@@ -46,40 +46,29 @@
       transition: 10
     target:
       entity_id: light.livingroom_hifi_tvbacklight
+  - service: input_select.select_option
+    data:
+      option: TV
+    target:
+      entity_id: input_select.tv_source_list
+  - service: media_player.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: media_player.livingroom_hifi_axr85
+    enabled: true
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+    enabled: true
   - service: switch.turn_off
     metadata: {}
     data: {}
     target:
       entity_id: switch.livingroom_hifi
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 250
-  - service: media_player.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id: media_player.livingroom_hifi_axr85
-  mode: single
-- id: '1687073560621'
-  alias: 'Meta: Turn off Cambridge AXR85 if powered off at wall'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - switch.livingroom_hifi
-    from: 'on'
-    to: 'off'
-  condition:
-  - condition: state
-    entity_id: media_player.livingroom_hifi_axr85
-    state: 'On'
-  action:
-  - service: media_player.turn_off
-    data: {}
-    target:
-      entity_id: media_player.livingroom_hifi_axr85
+    enabled: true
   mode: single
 - id: '1687073677351'
   alias: 'Meta: Turn off Sony UBPX-700 if powered off at wall'
@@ -1148,6 +1137,18 @@
     type: remote_button_long_press
     subtype: dim_down
     id: dim_down_long
+  - device_id: 2c7192e464c71a0f783635402a5b551c
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: button_1
+    id: first_button
+  - device_id: 2c7192e464c71a0f783635402a5b551c
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: button_2
+    id: second_button
   condition: []
   action:
   - choose:
@@ -1156,66 +1157,88 @@
         id:
         - toggle
       sequence:
-      - service: media_player.toggle
-        metadata: {}
+      - metadata: {}
         data: {}
         target:
           entity_id: media_player.masterbedroom
+        action: media_player.toggle
     - conditions:
       - condition: trigger
         id:
         - dim_up
       sequence:
-      - service: media_player.volume_up
-        data: {}
+      - data: {}
         target:
           entity_id: media_player.masterbedroom_speakers
+        action: media_player.volume_up
     - conditions:
       - condition: trigger
         id:
         - dim_down
       sequence:
-      - service: media_player.volume_down
-        target:
+      - target:
           entity_id:
           - media_player.masterbedroom_speakers
         data: {}
+        action: media_player.volume_down
     - conditions:
       - condition: trigger
         id:
         - left
       sequence:
-      - service: media_player.media_previous_track
-        target:
+      - target:
           entity_id: media_player.masterbedroom
         data: {}
+        action: media_player.media_previous_track
     - conditions:
       - condition: trigger
         id:
         - right
       sequence:
-      - service: media_player.media_next_track
-        target:
+      - target:
           entity_id:
           - media_player.masterbedroom
         data: {}
+        action: media_player.media_next_track
     - conditions:
       - condition: trigger
         id:
         - dim_up_long
       sequence:
-      - service: media_player.volume_up
-        data: {}
+      - data: {}
         target:
           entity_id: media_player.masterbedroom_speakers
+        action: media_player.volume_up
     - conditions:
       - condition: trigger
         id:
         - dim_down_long
       sequence:
-      - service: media_player.volume_down
-        target:
+      - target:
           entity_id:
           - media_player.masterbedroom_speakers
         data: {}
+        action: media_player.volume_down
+    - conditions:
+      - condition: trigger
+        id:
+        - first_button
+      sequence:
+      - data:
+          media_content_type: music
+          media_content_id: http://10.0.1.103:9981/stream/channel/a18b2fb7e8e1d732e9e7727cd270262f?profile=lms-tvh
+        action: media_player.play_media
+        target:
+          entity_id: media_player.masterbedroom
+    - conditions:
+      - condition: trigger
+        id:
+        - second_button
+      sequence:
+      - data:
+          media_content_type: music
+          media_content_id: http://10.0.1.103:9981/stream/channel/6f7ffed1306301cce396e528393a006a?profile=lms-tvh
+        action: media_player.play_media
+        target:
+          entity_id: media_player.masterbedroom
   mode: single
